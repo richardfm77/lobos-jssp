@@ -18,7 +18,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ConstructorGrafoJsspTest {
+class ConstructorGraficaJsspTest {
 
     @Test
     void construyeCorrectamenteLaGrafica() {
@@ -31,7 +31,7 @@ class ConstructorGrafoJsspTest {
                         .generarInicial(instancia);
 
         GraficaDirigida<Operacion> grafica =
-                ConstructorGrafoJssp.construir(
+                ConstructorGraficaJssp.construir(
                         instancia,
                         solucion
                 );
@@ -58,7 +58,7 @@ class ConstructorGrafoJsspTest {
                         .generarInicial(instancia);
 
         GraficaDirigida<Operacion> grafica =
-                ConstructorGrafoJssp.construir(
+                ConstructorGraficaJssp.construir(
                         instancia,
                         solucion
                 );
@@ -105,7 +105,7 @@ class ConstructorGrafoJsspTest {
                         .generarInicial(instancia);
 
         GraficaDirigida<Operacion> grafica =
-                ConstructorGrafoJssp.construir(
+                ConstructorGraficaJssp.construir(
                         instancia,
                         solucion
                 );
@@ -188,7 +188,7 @@ class ConstructorGrafoJsspTest {
                 new SolucionJssp(secuencias);
 
         GraficaDirigida<Operacion> grafica =
-                ConstructorGrafoJssp.construir(
+                ConstructorGraficaJssp.construir(
                         instancia,
                         solucionModificada
                 );
@@ -226,7 +226,7 @@ class ConstructorGrafoJsspTest {
 
         assertThrows(
                 ExcepcionAplicacion.class,
-                () -> ConstructorGrafoJssp.construir(
+                () -> ConstructorGraficaJssp.construir(
                         null,
                         solucion
                 )
@@ -241,7 +241,7 @@ class ConstructorGrafoJsspTest {
 
         assertThrows(
                 ExcepcionAplicacion.class,
-                () -> ConstructorGrafoJssp.construir(
+                () -> ConstructorGraficaJssp.construir(
                         instancia,
                         null
                 )

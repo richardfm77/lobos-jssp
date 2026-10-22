@@ -18,9 +18,9 @@ import java.util.List;
  * - aristas de precedencia entre operaciones de un mismo trabajo;
  * - aristas de precedencia determinadas por el orden de cada máquina.
  */
-public final class ConstructorGrafoJssp {
+public final class ConstructorGraficaJssp {
 
-    private ConstructorGrafoJssp() {
+    private ConstructorGraficaJssp() {
     }
 
     /**
