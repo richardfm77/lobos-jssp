@@ -36,7 +36,7 @@ class LectorInstanciaJsspTest {
         );
 
         assertEquals(
-                24,
+                12,
                 instancia.cotaSuperior()
         );
 
@@ -83,6 +83,150 @@ class LectorInstanciaJsspTest {
 
         assertEquals(
                 3,
+                primeraOperacion.tiempoProceso()
+        );
+    }
+
+    @Test
+    void leeCorrectamenteUnaInstanciaValida40x40() {
+
+        Path archivo = obtenerRutaRecurso(
+                "instancias/JSSP_40_40.txt"
+        );
+
+        InstanciaJssp instancia =
+                LectorInstanciaJssp.leer(archivo);
+
+        assertEquals(
+                40,
+                instancia.numeroTrabajos()
+        );
+
+        assertEquals(
+                40,
+                instancia.numeroMaquinas()
+        );
+
+        assertEquals(
+                205,
+                instancia.cotaSuperior()
+        );
+
+        assertEquals(
+                103,
+                instancia.cotaInferior()
+        );
+
+        assertEquals(
+                40,
+                instancia.trabajos().size()
+        );
+
+        Trabajo primerTrabajo =
+                instancia.trabajos().get(0);
+
+        assertEquals(
+                0,
+                primerTrabajo.id()
+        );
+
+        assertEquals(
+                40,
+                primerTrabajo.operaciones().size()
+        );
+
+        Operacion primeraOperacion =
+                primerTrabajo.operaciones().get(0);
+
+        assertEquals(
+                0,
+                primeraOperacion.idTrabajo()
+        );
+
+        assertEquals(
+                0,
+                primeraOperacion.indiceOperacion()
+        );
+
+        assertEquals(
+                23,
+                primeraOperacion.idMaquina()
+        );
+
+        assertEquals(
+                8,
+                primeraOperacion.tiempoProceso()
+        );
+    }
+
+    @Test
+    void leeCorrectamenteUnaInstanciaValida100x100() {
+
+        Path archivo = obtenerRutaRecurso(
+                "instancias/JSSP_100_100.txt"
+        );
+
+        InstanciaJssp instancia =
+                LectorInstanciaJssp.leer(archivo);
+
+        assertEquals(
+                100,
+                instancia.numeroTrabajos()
+        );
+
+        assertEquals(
+                100,
+                instancia.numeroMaquinas()
+        );
+
+        assertEquals(
+                125341,
+                instancia.cotaSuperior()
+        );
+
+        assertEquals(
+                56381,
+                instancia.cotaInferior()
+        );
+
+        assertEquals(
+                100,
+                instancia.trabajos().size()
+        );
+
+        Trabajo primerTrabajo =
+                instancia.trabajos().get(0);
+
+        assertEquals(
+                0,
+                primerTrabajo.id()
+        );
+
+        assertEquals(
+                100,
+                primerTrabajo.operaciones().size()
+        );
+
+        Operacion primeraOperacion =
+                primerTrabajo.operaciones().get(0);
+
+        assertEquals(
+                0,
+                primeraOperacion.idTrabajo()
+        );
+
+        assertEquals(
+                0,
+                primeraOperacion.indiceOperacion()
+        );
+
+        assertEquals(
+                20,
+                primeraOperacion.idMaquina()
+        );
+
+        assertEquals(
+                172,
                 primeraOperacion.tiempoProceso()
         );
     }
