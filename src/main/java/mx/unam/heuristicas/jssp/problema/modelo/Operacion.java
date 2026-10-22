@@ -1,4 +1,4 @@
-package mx.unam.heuristicas.jssp.modelo;
+package mx.unam.heuristicas.jssp.problema.modelo;
 
 /**
  * Representa una operación perteneciente a un trabajo del JSSP.

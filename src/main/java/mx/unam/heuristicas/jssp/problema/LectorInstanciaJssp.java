@@ -1,9 +1,9 @@
-package mx.unam.heuristicas.jssp.lectura;
+package mx.unam.heuristicas.jssp.problema;
 
 import mx.unam.heuristicas.jssp.excepcion.ExcepcionAplicacion;
-import mx.unam.heuristicas.jssp.modelo.InstanciaJssp;
-import mx.unam.heuristicas.jssp.modelo.Operacion;
-import mx.unam.heuristicas.jssp.modelo.Trabajo;
+import mx.unam.heuristicas.jssp.problema.modelo.InstanciaJssp;
+import mx.unam.heuristicas.jssp.problema.modelo.Operacion;
+import mx.unam.heuristicas.jssp.problema.modelo.Trabajo;
 
 import java.io.IOException;
 import java.nio.file.Files;

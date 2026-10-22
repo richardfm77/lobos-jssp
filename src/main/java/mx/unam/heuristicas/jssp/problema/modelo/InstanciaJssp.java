@@ -1,4 +1,4 @@
-package mx.unam.heuristicas.jssp.modelo;
+package mx.unam.heuristicas.jssp.problema.modelo;
 
 import java.util.List;
 
