@@ -61,24 +61,6 @@ class ProblemaJsspTest {
         }
 
         @Test
-        void distanciaTodaviaNoEstaImplementada() {
-
-                InstanciaJssp instancia = UtilTest.obtenerInstancia(
-                                "JSSP_40_40.txt");
-
-                SolucionJssp solucion = GeneradorSolucionJssp
-                                .generarInicial(instancia);
-
-                ProblemaJssp problema = new ProblemaJssp(instancia);
-
-                assertThrows(
-                                UnsupportedOperationException.class,
-                                () -> problema.distancia(
-                                                solucion,
-                                                solucion));
-        }
-
-        @Test
         void generaVecinoConUnSoloIntercambio() {
 
                 InstanciaJssp instancia = UtilTest.obtenerInstancia(
@@ -168,5 +150,84 @@ class ProblemaJsspTest {
                 assertThrows(
                                 ExcepcionAplicacion.class,
                                 () -> problema.generarVecino(null));
+        }
+
+        @Test
+        void distanciaDeUnaSolucionConsigoMismaEsCero() {
+
+                InstanciaJssp instancia = UtilTest.obtenerInstancia(
+                                "JSSP_40_40.txt");
+
+                SolucionJssp solucion = GeneradorSolucionJssp
+                                .generarSolucionCotaSuperior(
+                                                instancia);
+
+                ProblemaJssp problema = new ProblemaJssp(instancia);
+
+                double distancia = problema.distancia(
+                                solucion,
+                                solucion);
+
+                assertTrue(
+                                DoublePrecision.equals(
+                                                0.0,
+                                                distancia));
+        }
+
+        @Test
+        void vecinoGeneradoTieneDistanciaUno() {
+
+                InstanciaJssp instancia = UtilTest.obtenerInstancia(
+                                "JSSP_40_40.txt");
+
+                SolucionJssp solucion = GeneradorSolucionJssp
+                                .generarSolucionCotaSuperior(
+                                                instancia);
+
+                ProblemaJssp problema = new ProblemaJssp(
+                                instancia,
+                                new Random(12345L));
+
+                SolucionJssp vecino = problema.generarVecino(solucion);
+
+                double distancia = problema.distancia(
+                                solucion,
+                                vecino);
+
+                assertTrue(
+                                DoublePrecision.equals(
+                                                1.0,
+                                                distancia));
+        }
+
+        @Test
+        void distanciaEsSimetrica() {
+
+                InstanciaJssp instancia = UtilTest.obtenerInstancia(
+                                "JSSP_40_40.txt");
+
+                SolucionJssp primera = GeneradorSolucionJssp
+                                .generarSolucionCotaSuperior(
+                                                instancia);
+
+                ProblemaJssp problema = new ProblemaJssp(
+                                instancia,
+                                new Random(12345L));
+
+                SolucionJssp segunda = problema.generarVecino(
+                                primera);
+
+                double distanciaPrimeraSegunda = problema.distancia(
+                                primera,
+                                segunda);
+
+                double distanciaSegundaPrimera = problema.distancia(
+                                segunda,
+                                primera);
+
+                assertTrue(
+                                DoublePrecision.equals(
+                                                distanciaPrimeraSegunda,
+                                                distanciaSegundaPrimera));
         }
 }

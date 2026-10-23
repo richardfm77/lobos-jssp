@@ -4,6 +4,8 @@ import mx.unam.heuristicas.jssp.wsa.ProblemaHeuristico;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.random.RandomGenerator;
 
 import mx.unam.heuristicas.jssp.estructura.GraficaDirigida;
@@ -171,8 +173,39 @@ public final class ProblemaJssp
                         SolucionJssp primera,
                         SolucionJssp segunda) {
 
-                throw new UnsupportedOperationException(
-                                "La distancia entre soluciones todavía no está implementada.");
+                if (primera == null || segunda == null) {
+                        throw new ExcepcionAplicacion(
+                                        "Las soluciones JSSP no pueden ser nulas.");
+                }
+
+                Map<Integer, SecuenciaMaquina> secuenciasSegunda = new HashMap<>();
+
+                for (SecuenciaMaquina secuencia : segunda.secuenciasMaquinas()) {
+
+                        secuenciasSegunda.put(
+                                        secuencia.idMaquina(),
+                                        secuencia);
+                }
+
+                int distanciaTotal = 0;
+
+                for (SecuenciaMaquina secuenciaPrimera : primera.secuenciasMaquinas()) {
+
+                        SecuenciaMaquina secuenciaSegunda = secuenciasSegunda.get(
+                                        secuenciaPrimera.idMaquina());
+
+                        if (secuenciaSegunda == null) {
+                                throw new ExcepcionAplicacion(
+                                                "Las soluciones no contienen "
+                                                                + "las mismas máquinas.");
+                        }
+
+                        distanciaTotal += distanciaSecuencias(
+                                        secuenciaPrimera,
+                                        secuenciaSegunda);
+                }
+
+                return distanciaTotal;
         }
 
         private void intercambiarDosOperaciones(
@@ -192,5 +225,73 @@ public final class ProblemaJssp
                                 operaciones,
                                 primeraPosicion,
                                 segundaPosicion);
+        }
+
+        private int distanciaSecuencias(
+                        SecuenciaMaquina primera,
+                        SecuenciaMaquina segunda) {
+
+                if (primera.operaciones().size() != segunda.operaciones().size()) {
+
+                        throw new ExcepcionAplicacion(
+                                        "Las secuencias de una misma máquina "
+                                                        + "deben contener el mismo número de operaciones.");
+                }
+
+                Map<Operacion, Integer> posicionObjetivo = new HashMap<>();
+
+                int posicion = 0;
+
+                for (Operacion operacion : segunda.operaciones()) {
+
+                        posicionObjetivo.put(
+                                        operacion,
+                                        posicion);
+
+                        posicion++;
+                }
+
+                int[] permutacion = new int[primera.operaciones().size()];
+
+                int indice = 0;
+
+                for (Operacion operacion : primera.operaciones()) {
+
+                        Integer posicionDestino = posicionObjetivo.get(operacion);
+
+                        if (posicionDestino == null) {
+                                throw new ExcepcionAplicacion(
+                                                "Las secuencias no contienen "
+                                                                + "las mismas operaciones.");
+                        }
+
+                        permutacion[indice] = posicionDestino;
+
+                        indice++;
+                }
+
+                boolean[] visitado = new boolean[permutacion.length];
+
+                int ciclos = 0;
+
+                for (int i = 0; i < permutacion.length; i++) {
+
+                        if (visitado[i]) {
+                                continue;
+                        }
+
+                        ciclos++;
+
+                        int actual = i;
+
+                        while (!visitado[actual]) {
+
+                                visitado[actual] = true;
+
+                                actual = permutacion[actual];
+                        }
+                }
+
+                return permutacion.length - ciclos;
         }
 }
