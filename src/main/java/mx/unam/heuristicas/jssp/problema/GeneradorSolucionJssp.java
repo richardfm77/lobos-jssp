@@ -8,7 +8,10 @@ import mx.unam.heuristicas.jssp.problema.modelo.SolucionJssp;
 import mx.unam.heuristicas.jssp.problema.modelo.Trabajo;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public final class GeneradorSolucionJssp {
 
@@ -64,5 +67,72 @@ public final class GeneradorSolucionJssp {
 
         return new SolucionJssp(
                 secuenciasMaquinas);
+    }
+
+    /**
+     * Genera la solución asociada al procedimiento utilizado para calcular
+     * la cota superior de una instancia JSSP.
+     *
+     * Las operaciones se recorren por nivel: primero se considera la primera
+     * operación de cada trabajo, después la segunda operación de cada trabajo
+     * y así sucesivamente hasta procesar todas las operaciones.
+     *
+     * Cada operación se agrega a la secuencia correspondiente a la máquina
+     * que debe procesarla, conservando dicho orden de recorrido.
+     *
+     * La solución generada es factible y su makespan corresponde a la
+     * cota superior calculada mediante este procedimiento.
+     *
+     * @param instancia instancia del problema JSSP
+     * @return solución cuya cadena de máquinas corresponde a la construcción
+     *         utilizada para obtener la cota superior
+     */
+    public static SolucionJssp generarSolucionCotaSuperior(
+            InstanciaJssp instancia) {
+
+        if (instancia == null) {
+            throw new ExcepcionAplicacion(
+                    "La instancia JSSP no puede ser nula.");
+        }
+
+        Map<Integer, List<Operacion>> operacionesPorMaquina = new LinkedHashMap<>();
+
+        for (int idMaquina = 0; idMaquina < instancia.numeroMaquinas(); idMaquina++) {
+
+            operacionesPorMaquina.put(
+                    idMaquina,
+                    new ArrayList<>());
+        }
+
+        List<Iterator<Operacion>> iteradoresTrabajos = new ArrayList<>();
+
+        for (Trabajo trabajo : instancia.trabajos()) {
+            iteradoresTrabajos.add(
+                    trabajo.operaciones().iterator());
+        }
+
+        for (int indiceOperacion = 0; indiceOperacion < instancia.numeroMaquinas(); indiceOperacion++) {
+
+            for (Iterator<Operacion> iterador : iteradoresTrabajos) {
+
+                Operacion operacion = iterador.next();
+
+                operacionesPorMaquina
+                        .get(operacion.idMaquina())
+                        .add(operacion);
+            }
+        }
+
+        List<SecuenciaMaquina> secuencias = new ArrayList<>();
+
+        for (Map.Entry<Integer, List<Operacion>> entrada : operacionesPorMaquina.entrySet()) {
+
+            secuencias.add(
+                    new SecuenciaMaquina(
+                            entrada.getKey(),
+                            entrada.getValue()));
+        }
+
+        return new SolucionJssp(secuencias);
     }
 }

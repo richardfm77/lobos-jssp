@@ -45,6 +45,36 @@ class EvaluadorGraficaJsspTest {
     }
 
     @Test
+    void solucionCotaSuperior40x40TieneMakespanEsperado() {
+
+        InstanciaJssp instancia =
+                UtilTest.obtenerInstancia("JSSP_40_40.txt");
+
+        SolucionJssp solucion =
+                GeneradorSolucionJssp
+                        .generarSolucionCotaSuperior(instancia);
+
+        GraficaDirigida<Operacion> grafica =
+                ConstructorGraficaJssp.construir(
+                        instancia,
+                        solucion
+                );
+
+        ResultadoEvaluacionJssp resultado =
+                EvaluadorGraficaJssp.evaluar(grafica);
+
+        assertEquals(
+                205,
+                resultado.makespan()
+        );
+
+        assertEquals(
+                0,
+                resultado.verticesEnCiclo()
+        );
+    }
+
+    @Test
     void detectaVerticesEnCiclo() {
 
         Operacion a =
