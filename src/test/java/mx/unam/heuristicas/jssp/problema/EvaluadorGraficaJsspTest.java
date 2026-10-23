@@ -1,5 +1,6 @@
 package mx.unam.heuristicas.jssp.problema;
 
+import mx.unam.heuristicas.jssp.UtilTest;
 import mx.unam.heuristicas.jssp.estructura.GraficaDirigida;
 import mx.unam.heuristicas.jssp.excepcion.ExcepcionAplicacion;
 import mx.unam.heuristicas.jssp.problema.modelo.InstanciaJssp;
@@ -9,10 +10,6 @@ import mx.unam.heuristicas.jssp.problema.modelo.SolucionJssp;
 
 import org.junit.jupiter.api.Test;
 
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Path;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class EvaluadorGraficaJsspTest {
@@ -21,7 +18,7 @@ class EvaluadorGraficaJsspTest {
     void calculaCorrectamenteMakespanDeUnaGraficaAciclica() {
 
         InstanciaJssp instancia =
-                obtenerInstancia();
+                UtilTest.obtenerInstancia("valida-3x3.txt");
 
         SolucionJssp solucion =
                 GeneradorSolucionJssp
@@ -89,40 +86,4 @@ class EvaluadorGraficaJsspTest {
         );
     }
 
-    private InstanciaJssp obtenerInstancia() {
-
-        Path archivo =
-                obtenerRutaRecurso(
-                        "instancias/valida-3x3.txt"
-                );
-
-        return LectorInstanciaJssp.leer(
-                archivo
-        );
-    }
-
-    private Path obtenerRutaRecurso(
-            String nombreRecurso
-    ) {
-
-        URL recurso = getClass()
-                .getClassLoader()
-                .getResource(nombreRecurso);
-
-        assertNotNull(recurso);
-
-        try {
-            return Path.of(
-                    recurso.toURI()
-            );
-        } catch (URISyntaxException e) {
-
-            fail(
-                    "No se pudo obtener la ruta del recurso: "
-                            + nombreRecurso
-            );
-
-            return null;
-        }
-    }
 }

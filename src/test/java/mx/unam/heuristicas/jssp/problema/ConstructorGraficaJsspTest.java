@@ -1,5 +1,6 @@
 package mx.unam.heuristicas.jssp.problema;
 
+import mx.unam.heuristicas.jssp.UtilTest;
 import mx.unam.heuristicas.jssp.estructura.GraficaDirigida;
 import mx.unam.heuristicas.jssp.excepcion.ExcepcionAplicacion;
 import mx.unam.heuristicas.jssp.problema.modelo.InstanciaJssp;
@@ -9,9 +10,6 @@ import mx.unam.heuristicas.jssp.problema.modelo.SolucionJssp;
 
 import org.junit.jupiter.api.Test;
 
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -24,7 +22,7 @@ class ConstructorGraficaJsspTest {
     void construyeCorrectamenteLaGrafica() {
 
         InstanciaJssp instancia =
-                obtenerInstancia();
+                UtilTest.obtenerInstancia("valida-3x3.txt");
 
         SolucionJssp solucion =
                 GeneradorSolucionJssp
@@ -51,7 +49,7 @@ class ConstructorGraficaJsspTest {
     void agregaLasPrecedenciasDeLosTrabajos() {
 
         InstanciaJssp instancia =
-                obtenerInstancia();
+                UtilTest.obtenerInstancia("valida-3x3.txt");
 
         SolucionJssp solucion =
                 GeneradorSolucionJssp
@@ -98,7 +96,7 @@ class ConstructorGraficaJsspTest {
     void agregaLasPrecedenciasDeLasMaquinas() {
 
         InstanciaJssp instancia =
-                obtenerInstancia();
+                UtilTest.obtenerInstancia("valida-3x3.txt");
 
         SolucionJssp solucion =
                 GeneradorSolucionJssp
@@ -151,7 +149,7 @@ class ConstructorGraficaJsspTest {
     void respetaElOrdenIndicadoPorLaSolucion() {
 
         InstanciaJssp instancia =
-                obtenerInstancia();
+                UtilTest.obtenerInstancia("valida-3x3.txt");
 
         SolucionJssp solucion =
                 GeneradorSolucionJssp
@@ -218,7 +216,7 @@ class ConstructorGraficaJsspTest {
     void lanzaExcepcionSiLaInstanciaEsNula() {
 
         InstanciaJssp instancia =
-                obtenerInstancia();
+                UtilTest.obtenerInstancia("valida-3x3.txt");
 
         SolucionJssp solucion =
                 GeneradorSolucionJssp
@@ -237,7 +235,7 @@ class ConstructorGraficaJsspTest {
     void lanzaExcepcionSiLaSolucionEsNula() {
 
         InstanciaJssp instancia =
-                obtenerInstancia();
+                UtilTest.obtenerInstancia("valida-3x3.txt");
 
         assertThrows(
                 ExcepcionAplicacion.class,
@@ -246,41 +244,5 @@ class ConstructorGraficaJsspTest {
                         null
                 )
         );
-    }
-
-    private InstanciaJssp obtenerInstancia() {
-
-        Path archivo =
-                obtenerRutaRecurso(
-                        "instancias/valida-3x3.txt"
-                );
-
-        return LectorInstanciaJssp.leer(
-                archivo
-        );
-    }
-
-    private Path obtenerRutaRecurso(
-            String nombreRecurso
-    ) {
-
-        URL recurso = getClass()
-                .getClassLoader()
-                .getResource(nombreRecurso);
-
-        assertNotNull(recurso);
-
-        try {
-            return Path.of(
-                    recurso.toURI()
-            );
-
-        } catch (URISyntaxException e) {
-            fail(
-                    "No se pudo obtener el recurso."
-            );
-
-            return null;
-        }
     }
 }

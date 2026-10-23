@@ -1,5 +1,6 @@
 package mx.unam.heuristicas.jssp.problema;
 
+import mx.unam.heuristicas.jssp.UtilTest;
 import mx.unam.heuristicas.jssp.excepcion.ExcepcionAplicacion;
 import mx.unam.heuristicas.jssp.problema.modelo.InstanciaJssp;
 import mx.unam.heuristicas.jssp.problema.modelo.Operacion;
@@ -7,8 +8,6 @@ import mx.unam.heuristicas.jssp.problema.modelo.Trabajo;
 
 import org.junit.jupiter.api.Test;
 
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,7 +17,7 @@ class LectorInstanciaJsspTest {
     @Test
     void leeCorrectamenteUnaInstanciaValida() {
 
-        Path archivo = obtenerRutaRecurso(
+        Path archivo = UtilTest.obtenerRutaRecurso(
                 "instancias/valida-3x3.txt"
         );
 
@@ -90,7 +89,7 @@ class LectorInstanciaJsspTest {
     @Test
     void leeCorrectamenteUnaInstanciaValida40x40() {
 
-        Path archivo = obtenerRutaRecurso(
+        Path archivo = UtilTest.obtenerRutaRecurso(
                 "instancias/JSSP_40_40.txt"
         );
 
@@ -162,7 +161,7 @@ class LectorInstanciaJsspTest {
     @Test
     void leeCorrectamenteUnaInstanciaValida100x100() {
 
-        Path archivo = obtenerRutaRecurso(
+        Path archivo = UtilTest.obtenerRutaRecurso(
                 "instancias/JSSP_100_100.txt"
         );
 
@@ -235,7 +234,7 @@ class LectorInstanciaJsspTest {
     void lanzaExcepcionSiElArchivoNoExiste() {
 
         Path archivo = Path.of(
-                "archivo-que-no-existe.txt"
+                "instancias/archivo-que-no-existe.txt"
         );
 
         ExcepcionAplicacion excepcion =
@@ -253,7 +252,7 @@ class LectorInstanciaJsspTest {
     @Test
     void lanzaExcepcionSiElArchivoEstaVacio() {
 
-        Path archivo = obtenerRutaRecurso(
+        Path archivo = UtilTest.obtenerRutaRecurso(
                 "instancias/vacia.txt"
         );
 
@@ -272,7 +271,7 @@ class LectorInstanciaJsspTest {
     @Test
     void lanzaExcepcionSiElEncabezadoEsInvalido() {
 
-        Path archivo = obtenerRutaRecurso(
+        Path archivo = UtilTest.obtenerRutaRecurso(
                 "instancias/encabezado-invalido.txt"
         );
 
@@ -291,7 +290,7 @@ class LectorInstanciaJsspTest {
     @Test
     void lanzaExcepcionSiElNumeroDeTrabajosNoCoincide() {
 
-        Path archivo = obtenerRutaRecurso(
+        Path archivo = UtilTest.obtenerRutaRecurso(
                 "instancias/numero-trabajos-invalido.txt"
         );
 
@@ -310,7 +309,7 @@ class LectorInstanciaJsspTest {
     @Test
     void lanzaExcepcionSiUnTrabajoNoTieneElNumeroCorrectoDeOperaciones() {
 
-        Path archivo = obtenerRutaRecurso(
+        Path archivo = UtilTest.obtenerRutaRecurso(
                 "instancias/numero-operaciones-invalido.txt"
         );
 
@@ -331,7 +330,7 @@ class LectorInstanciaJsspTest {
     @Test
     void lanzaExcepcionSiLaMaquinaEstaFueraDeRango() {
 
-        Path archivo = obtenerRutaRecurso(
+        Path archivo = UtilTest.obtenerRutaRecurso(
                 "instancias/maquina-invalida.txt"
         );
 
@@ -350,7 +349,7 @@ class LectorInstanciaJsspTest {
     @Test
     void lanzaExcepcionSiElTiempoDeProcesamientoNoEsPositivo() {
 
-        Path archivo = obtenerRutaRecurso(
+        Path archivo = UtilTest.obtenerRutaRecurso(
                 "instancias/tiempo-invalido.txt"
         );
 
@@ -369,7 +368,7 @@ class LectorInstanciaJsspTest {
     @Test
     void lanzaExcepcionSiExisteUnValorNoNumerico() {
 
-        Path archivo = obtenerRutaRecurso(
+        Path archivo = UtilTest.obtenerRutaRecurso(
                 "instancias/valor-no-numerico.txt"
         );
 
@@ -385,28 +384,4 @@ class LectorInstanciaJsspTest {
         );
     }
 
-    private Path obtenerRutaRecurso(String nombreRecurso) {
-
-        URL recurso = getClass()
-                .getClassLoader()
-                .getResource(nombreRecurso);
-
-        assertNotNull(
-                recurso,
-                "No se encontró el recurso de prueba: "
-                        + nombreRecurso
-        );
-
-        try {
-            return Path.of(recurso.toURI());
-
-        } catch (URISyntaxException e) {
-            fail(
-                    "No se pudo obtener la ruta del recurso: "
-                            + nombreRecurso
-            );
-
-            return null;
-        }
-    }
 }

@@ -1,5 +1,6 @@
 package mx.unam.heuristicas.jssp.problema;
 
+import mx.unam.heuristicas.jssp.UtilTest;
 import mx.unam.heuristicas.jssp.excepcion.ExcepcionAplicacion;
 import mx.unam.heuristicas.jssp.problema.modelo.InstanciaJssp;
 import mx.unam.heuristicas.jssp.problema.modelo.SecuenciaMaquina;
@@ -7,8 +8,6 @@ import mx.unam.heuristicas.jssp.problema.modelo.SolucionJssp;
 
 import org.junit.jupiter.api.Test;
 
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,7 +17,7 @@ class GeneradorSolucionJsspTest {
     @Test
     void generaCorrectamenteUnaSolucionInicial() {
 
-        Path archivo = obtenerRutaRecurso(
+        Path archivo = UtilTest.obtenerRutaRecurso(
                 "instancias/valida-3x3.txt"
         );
 
@@ -85,30 +84,4 @@ class GeneradorSolucionJsspTest {
         );
     }
 
-    private Path obtenerRutaRecurso(
-            String nombreRecurso
-    ) {
-
-        URL recurso = getClass()
-                .getClassLoader()
-                .getResource(nombreRecurso);
-
-        assertNotNull(
-                recurso,
-                "No se encontró el recurso de prueba: "
-                        + nombreRecurso
-        );
-
-        try {
-            return Path.of(recurso.toURI());
-
-        } catch (URISyntaxException e) {
-            fail(
-                    "No se pudo obtener la ruta del recurso: "
-                            + nombreRecurso
-            );
-
-            return null;
-        }
-    }
 }
