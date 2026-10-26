@@ -3,6 +3,7 @@ package mx.unam.heuristicas.jssp.wsa;
 public record ParametrosWsa(
         int tamanoPoblacion,
         int numeroIteraciones,
+        int numeroIteracionesGeneracionPoblacion,
         int rangoVisual,
         double probabilidadAmenaza,
         long semilla
@@ -19,6 +20,12 @@ public record ParametrosWsa(
         if (numeroIteraciones <= 0) {
             throw new IllegalArgumentException(
                     "El número de iteraciones debe ser mayor que cero."
+            );
+        }
+
+        if (numeroIteracionesGeneracionPoblacion <= 0) {
+            throw new IllegalArgumentException(
+                    "El número de iteraciones de la población debe ser mayor que cero."
             );
         }
 
