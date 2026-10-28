@@ -153,6 +153,45 @@ class ProblemaJsspTest {
         }
 
         @Test
+        void vecinoHaciaObjetivoReduceDistanciaEnUno() {
+
+                InstanciaJssp instancia = UtilTest.obtenerInstancia(
+                                "JSSP_40_40.txt");
+
+                ProblemaJssp problema = new ProblemaJssp(
+                                instancia,
+                                new Random(12345L));
+
+                SolucionJssp actual = GeneradorSolucionJssp
+                                .generarSolucionCotaSuperior(
+                                                instancia);
+
+                SolucionJssp objetivo = actual;
+
+                for (int i = 0; i < 10; i++) {
+                        objetivo = problema.generarVecino(
+                                        objetivo);
+                }
+
+                double distanciaAntes = problema.distancia(
+                                actual,
+                                objetivo);
+
+                SolucionJssp vecino = problema.generarVecinoHacia(
+                                actual,
+                                objetivo);
+
+                double distanciaDespues = problema.distancia(
+                                vecino,
+                                objetivo);
+
+                assertTrue(
+                                DoublePrecision.equals(
+                                                distanciaAntes - 1.0,
+                                                distanciaDespues));
+        }
+
+        @Test
         void distanciaDeUnaSolucionConsigoMismaEsCero() {
 
                 InstanciaJssp instancia = UtilTest.obtenerInstancia(

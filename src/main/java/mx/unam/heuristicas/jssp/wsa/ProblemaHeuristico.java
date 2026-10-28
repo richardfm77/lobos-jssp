@@ -19,6 +19,16 @@ public interface ProblemaHeuristico<S> {
     S generarVecino(S solucion);
 
     /**
+     * Genera un vecino de una solución que se encuentra un paso
+     * más cerca de una solución objetivo.
+     *
+     * @param solucion solución actual
+     * @param objetivo solución hacia la cual se realiza el movimiento
+     * @return vecino de la solución actual más cercano al objetivo
+     */
+    S generarVecinoHacia(S solucion, S objetivo);
+
+    /**
      * Calcula la distancia entre dos soluciones.
      *
      * @param primera primera solución

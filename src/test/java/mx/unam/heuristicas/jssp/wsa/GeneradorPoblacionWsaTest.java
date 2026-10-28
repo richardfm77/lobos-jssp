@@ -275,6 +275,14 @@ class GeneradorPoblacionWsaTest {
                     }
 
                     @Override
+                    public Integer generarVecinoHacia(
+                             Integer solucion,
+                        Integer objetivo
+                        ) {
+                                return null;
+                        }
+
+                    @Override
                     public double distancia(
                             Integer primera,
                             Integer segunda
@@ -347,6 +355,14 @@ class GeneradorPoblacionWsaTest {
                     Integer solucion
             ) {
                 return solucion + 1;
+            }
+
+            @Override
+            public Integer generarVecinoHacia(
+                    Integer solucion,
+                    Integer objetivo
+            ) {
+                return null;
             }
 
             @Override
