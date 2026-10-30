@@ -4,7 +4,6 @@ import mx.unam.heuristicas.jssp.util.DoublePrecision;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Random;
 import java.util.Set;
 import java.util.random.RandomGenerator;
 
@@ -25,7 +24,8 @@ public final class GeneradorPoblacionWsa<S> {
          */
         public GeneradorPoblacionWsa(
                         ProblemaHeuristico<S> problema,
-                        ParametrosWsa parametros) {
+                        ParametrosWsa parametros,
+                        RandomGenerator generadorAleatorio) {
 
                 if (problema == null) {
                         throw new IllegalArgumentException(
@@ -40,7 +40,7 @@ public final class GeneradorPoblacionWsa<S> {
                 this.problema = problema;
                 this.parametros = parametros;
                 MAX_INTENTOS = this.parametros.numeroIteracionesGeneracionPoblacion();
-                this.generadorAleatorio = new Random(parametros.semilla());
+                this.generadorAleatorio = generadorAleatorio;
         }
 
         /**

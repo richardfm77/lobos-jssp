@@ -23,7 +23,8 @@ class GeneradorPoblacionWsaTest {
         GeneradorPoblacionWsa<Integer> generador =
                 new GeneradorPoblacionWsa<>(
                         problema,
-                        parametros
+                        parametros,
+                        new java.util.Random(12345L)
                 );
 
         PoblacionWsa<Integer> poblacion =
@@ -47,7 +48,8 @@ class GeneradorPoblacionWsaTest {
         GeneradorPoblacionWsa<Integer> generador =
                 new GeneradorPoblacionWsa<>(
                         problema,
-                        parametros
+                        parametros,
+                        new java.util.Random(12345L)
                 );
 
         PoblacionWsa<Integer> poblacion =
@@ -107,7 +109,8 @@ class GeneradorPoblacionWsaTest {
         GeneradorPoblacionWsa<Integer> generador =
                 new GeneradorPoblacionWsa<>(
                         problema,
-                        parametros
+                        parametros,
+                        new java.util.Random(12345L)
                 );
 
         PoblacionWsa<Integer> poblacion =
@@ -141,7 +144,8 @@ class GeneradorPoblacionWsaTest {
         GeneradorPoblacionWsa<Integer> generador =
                 new GeneradorPoblacionWsa<>(
                         problema,
-                        parametros
+                        parametros,
+                        new java.util.Random(12345L)
                 );
 
         PoblacionWsa<Integer> poblacion =
@@ -176,7 +180,8 @@ class GeneradorPoblacionWsaTest {
         GeneradorPoblacionWsa<Integer> generador =
                 new GeneradorPoblacionWsa<>(
                         problema,
-                        parametros
+                        parametros,
+                        new java.util.Random(12345L)
                 );
 
         PoblacionWsa<Integer> poblacion =
@@ -207,7 +212,8 @@ class GeneradorPoblacionWsaTest {
                 IllegalArgumentException.class,
                 () -> new GeneradorPoblacionWsa<Integer>(
                         null,
-                        parametros
+                        parametros,
+                        new java.util.Random(12345L)
                 )
         );
     }
@@ -222,7 +228,8 @@ class GeneradorPoblacionWsaTest {
                 IllegalArgumentException.class,
                 () -> new GeneradorPoblacionWsa<>(
                         problema,
-                        null
+                        null,
+                        new java.util.Random(12345L)
                 )
         );
     }
@@ -239,7 +246,8 @@ class GeneradorPoblacionWsaTest {
         GeneradorPoblacionWsa<Integer> generador =
                 new GeneradorPoblacionWsa<>(
                         problema,
-                        parametros
+                        parametros,
+                        new java.util.Random(12345L)
                 );
 
         assertThrows(
@@ -309,7 +317,8 @@ class GeneradorPoblacionWsaTest {
         GeneradorPoblacionWsa<Integer> generador =
                 new GeneradorPoblacionWsa<>(
                         problema,
-                        parametros
+                        parametros,
+                        new java.util.Random(12345L)
                 );
 
         /*

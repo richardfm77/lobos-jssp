@@ -18,7 +18,8 @@ class AmenazaWsaTest {
         AmenazaWsa<Integer> amenaza =
                 new AmenazaWsa<>(
                         problema,
-                        crearParametros(0.0)
+                        crearParametros(0.0),
+                        new java.util.Random(12345L)
                 );
 
         Lobo<Integer> lobo =
@@ -56,7 +57,8 @@ class AmenazaWsaTest {
         AmenazaWsa<Integer> amenaza =
                 new AmenazaWsa<>(
                         problema,
-                        crearParametros(1.0)
+                        crearParametros(1.0),
+                        new java.util.Random(12345L)
                 );
 
         Lobo<Integer> lobo =
@@ -174,7 +176,8 @@ class AmenazaWsaTest {
         AmenazaWsa<Integer> amenaza =
                 new AmenazaWsa<>(
                         problema,
-                        crearParametros(1.0)
+                        crearParametros(1.0),
+                        new java.util.Random(12345L)
                 );
 
         amenaza.procesar(
@@ -213,7 +216,8 @@ class AmenazaWsaTest {
         AmenazaWsa<Integer> amenaza =
                 new AmenazaWsa<>(
                         crearProblemaPrueba(),
-                        crearParametros(1.0)
+                        crearParametros(1.0),
+                        new java.util.Random(12345L)
                 );
 
         Lobo<Integer> lobo =
@@ -301,7 +305,8 @@ class AmenazaWsaTest {
         AmenazaWsa<Integer> amenaza =
                 new AmenazaWsa<>(
                         problema,
-                        crearParametros(1.0)
+                        crearParametros(1.0),
+                        new java.util.Random(12345L)    
                 );
 
         assertThrows(
@@ -333,7 +338,8 @@ class AmenazaWsaTest {
         AmenazaWsa<Integer> amenaza =
                 new AmenazaWsa<>(
                         crearProblemaPrueba(),
-                        crearParametros(1.0)
+                        crearParametros(1.0),
+                        new java.util.Random(12345L)
                 );
 
         Lobo<Integer> lobo =
@@ -366,7 +372,8 @@ class AmenazaWsaTest {
         AmenazaWsa<Integer> amenaza =
                 new AmenazaWsa<>(
                         crearProblemaPrueba(),
-                        crearParametros(1.0)
+                        crearParametros(1.0),
+                        new java.util.Random(12345L)
                 );
 
         assertThrows(
@@ -384,7 +391,8 @@ class AmenazaWsaTest {
                 IllegalArgumentException.class,
                 () -> new AmenazaWsa<Integer>(
                         null,
-                        crearParametros(1.0)
+                        crearParametros(1.0),
+                        new java.util.Random(12345L)
                 )
         );
     }
@@ -396,7 +404,8 @@ class AmenazaWsaTest {
                 IllegalArgumentException.class,
                 () -> new AmenazaWsa<>(
                         crearProblemaPrueba(),
-                        null
+                        null,
+                        new java.util.Random(12345L)
                 )
         );
     }

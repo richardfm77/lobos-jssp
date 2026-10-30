@@ -2,7 +2,6 @@ package mx.unam.heuristicas.jssp.wsa;
 
 import mx.unam.heuristicas.jssp.util.DoublePrecision;
 
-import java.util.Random;
 import java.util.random.RandomGenerator;
 
 public final class AmenazaWsa<S> {
@@ -19,7 +18,8 @@ public final class AmenazaWsa<S> {
      */
     public AmenazaWsa(
             ProblemaHeuristico<S> problema,
-            ParametrosWsa parametros) {
+            ParametrosWsa parametros,
+            RandomGenerator generadorAleatorio) {
 
         if (problema == null) {
             throw new IllegalArgumentException(
@@ -33,7 +33,7 @@ public final class AmenazaWsa<S> {
 
         this.problema = problema;
         this.parametros = parametros;
-        this.generadorAleatorio = new Random(parametros.semilla());
+        this.generadorAleatorio = generadorAleatorio;
     }
 
     /**
