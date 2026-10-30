@@ -217,4 +217,72 @@ class CalculadoraCotasJsspTest {
                                 instancia.cotaSuperior(),
                                 cotas.cotaSuperior());
         }
+
+        @Test
+        void calculaCorrectamenteLaCotaInferior50x20() {
+
+                InstanciaJssp instancia = UtilTest.obtenerInstancia(
+                                "JSSP_50_20.txt");
+
+                int cotaInferior = CalculadoraCotasJssp
+                                .calcularCotaInferior(
+                                                instancia);
+
+                assertEquals(
+                                5621,
+                                cotaInferior);
+        }
+
+        @Test
+        void calculaCorrectamenteLaCotaSuperior50x20() {
+
+                InstanciaJssp instancia = UtilTest.obtenerInstancia(
+                                "JSSP_50_20.txt");
+
+                int cotaSuperior = CalculadoraCotasJssp
+                                .calcularCotaSuperior(
+                                                instancia);
+
+                assertEquals(
+                                100947,
+                                cotaSuperior);
+        }
+
+        @Test
+        void calculaCorrectamenteAmbasCotas50x20() {
+
+                InstanciaJssp instancia = UtilTest.obtenerInstancia(
+                                "JSSP_50_20.txt");
+
+                CotasJssp cotas = CalculadoraCotasJssp
+                                .calcular(
+                                                instancia);
+
+                assertEquals(
+                                5621,
+                                cotas.cotaInferior());
+
+                assertEquals(
+                                100947,
+                                cotas.cotaSuperior());
+        }
+
+        @Test
+        void lasCotasCalculadasCoincidenConLasDeLaInstancia50x20() {
+
+                InstanciaJssp instancia = UtilTest.obtenerInstancia(
+                                "JSSP_50_20.txt");
+
+                CotasJssp cotas = CalculadoraCotasJssp
+                                .calcular(
+                                                instancia);
+
+                assertEquals(
+                                instancia.cotaInferior(),
+                                cotas.cotaInferior());
+
+                assertEquals(
+                                instancia.cotaSuperior(),
+                                cotas.cotaSuperior());
+        }
 }

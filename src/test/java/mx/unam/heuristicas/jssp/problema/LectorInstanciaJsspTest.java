@@ -230,6 +230,78 @@ class LectorInstanciaJsspTest {
         );
     }
 
+        @Test
+        void leeCorrectamenteUnaInstanciaValida50x20() {
+
+        Path archivo = UtilTest.obtenerRutaRecurso(
+                "instancias/JSSP_50_20.txt"
+        );
+
+        InstanciaJssp instancia =
+                LectorInstanciaJssp.leer(archivo);
+
+        assertEquals(
+                50,
+                instancia.numeroTrabajos()
+        );
+
+        assertEquals(
+                20,
+                instancia.numeroMaquinas()
+        );
+
+        assertEquals(
+                100947,
+                instancia.cotaSuperior()
+        );
+
+        assertEquals(
+                5621,
+                instancia.cotaInferior()
+        );
+
+        assertEquals(
+                50,
+                instancia.trabajos().size()
+        );
+
+        Trabajo primerTrabajo =
+                instancia.trabajos().get(0);
+
+        assertEquals(
+                0,
+                primerTrabajo.id()
+        );
+
+        assertEquals(
+                20,
+                primerTrabajo.operaciones().size()
+        );
+
+        Operacion primeraOperacion =
+                primerTrabajo.operaciones().get(0);
+
+        assertEquals(
+                0,
+                primeraOperacion.idTrabajo()
+        );
+
+        assertEquals(
+                0,
+                primeraOperacion.indiceOperacion()
+        );
+
+        assertEquals(
+                16,
+                primeraOperacion.idMaquina()
+        );
+
+        assertEquals(
+                80,
+                primeraOperacion.tiempoProceso()
+        );
+        }
+
     @Test
     void lanzaExcepcionSiElArchivoNoExiste() {
 

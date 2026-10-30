@@ -1,6 +1,7 @@
 package mx.unam.heuristicas.jssp.problema;
 
 import mx.unam.heuristicas.jssp.excepcion.ExcepcionAplicacion;
+import mx.unam.heuristicas.jssp.problema.modelo.CotasJssp;
 import mx.unam.heuristicas.jssp.problema.modelo.InstanciaJssp;
 import mx.unam.heuristicas.jssp.problema.modelo.Operacion;
 import mx.unam.heuristicas.jssp.problema.modelo.Trabajo;
@@ -25,7 +26,7 @@ public final class LectorInstanciaJssp {
      *
      * El formato esperado es:
      *
-     * n m cu ci
+     * n m
      * maquina tiempo maquina tiempo ...
      *
      * @param rutaArchivo ruta del archivo que contiene la instancia
@@ -64,22 +65,17 @@ public final class LectorInstanciaJssp {
                 .trim()
                 .split("\\s+");
 
-        if (encabezado.length != 4) {
+        if (encabezado.length != 2) {
             throw new ExcepcionAplicacion(
-                    "El encabezado debe contener exactamente: n m cu ci.");
+                    "El encabezado debe contener exactamente: n m.");
         }
 
         final int numeroTrabajos;
         final int numeroMaquinas;
-        final int cotaSuperior;
-        final int cotaInferior;
 
         try {
             numeroTrabajos = Integer.parseInt(encabezado[0]);
             numeroMaquinas = Integer.parseInt(encabezado[1]);
-            cotaSuperior = Integer.parseInt(encabezado[2]);
-            cotaInferior = Integer.parseInt(encabezado[3]);
-
         } catch (NumberFormatException e) {
             throw new ExcepcionAplicacion(
                     "El encabezado contiene valores que no son enteros.",
@@ -172,12 +168,21 @@ public final class LectorInstanciaJssp {
                             idTrabajo,
                             operaciones));
         }
+        
+        InstanciaJssp instancia = new InstanciaJssp(
+                numeroTrabajos,
+                numeroMaquinas,
+                0,
+                0,
+                trabajos);
+
+        CotasJssp cotas = CalculadoraCotasJssp.calcular(instancia);
 
         return new InstanciaJssp(
                 numeroTrabajos,
                 numeroMaquinas,
-                cotaSuperior,
-                cotaInferior,
+                cotas.cotaSuperior(),
+                cotas.cotaInferior(),
                 trabajos);
     }
 }
