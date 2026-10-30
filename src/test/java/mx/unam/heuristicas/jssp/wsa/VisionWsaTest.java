@@ -22,16 +22,16 @@ class VisionWsaTest {
                 crearParametros();
 
         Lobo<Integer> referencia =
-                new Lobo<>(10, 10.0);
+                new Lobo<>(10, 10.0,1);
 
         Lobo<Integer> cercanoIzquierda =
-                new Lobo<>(8, 8.0);
+                new Lobo<>(8, 8.0,1);
 
         Lobo<Integer> cercanoDerecha =
-                new Lobo<>(13, 13.0);
+                new Lobo<>(13, 13.0,1);
 
         Lobo<Integer> lejano =
-                new Lobo<>(20, 20.0);
+                new Lobo<>(20, 20.0,1);
 
         PoblacionWsa<Integer> poblacion =
                 new PoblacionWsa<>(
@@ -89,10 +89,10 @@ class VisionWsaTest {
                 crearParametros();
 
         Lobo<Integer> referencia =
-                new Lobo<>(10, 10.0);
+                new Lobo<>(10, 10.0, 1);
 
         Lobo<Integer> limite =
-                new Lobo<>(13, 13.0);
+                new Lobo<>(13, 13.0, 1);
 
         PoblacionWsa<Integer> poblacion =
                 new PoblacionWsa<>(
@@ -134,16 +134,16 @@ class VisionWsaTest {
                 crearParametros();
 
         Lobo<Integer> referencia =
-                new Lobo<>(10, 10.0);
+                new Lobo<>(10, 10.0, 1);
 
         Lobo<Integer> mejorVisible =
-                new Lobo<>(8, 8.0);
+                new Lobo<>(8, 8.0, 1);
 
         Lobo<Integer> peorVisible =
-                new Lobo<>(12, 12.0);
+                new Lobo<>(12, 12.0, 1);
 
         Lobo<Integer> mejorPeroLejano =
-                new Lobo<>(0, 0.0);
+                new Lobo<>(0, 0.0, 1);
 
         PoblacionWsa<Integer> poblacion =
                 new PoblacionWsa<>(
@@ -187,13 +187,13 @@ class VisionWsaTest {
                 crearParametros();
 
         Lobo<Integer> referencia =
-                new Lobo<>(10, 10.0);
+                new Lobo<>(10, 10.0, 1);
 
         Lobo<Integer> primero =
-                new Lobo<>(11, 11.0);
+                new Lobo<>(11, 11.0, 1);
 
         Lobo<Integer> segundo =
-                new Lobo<>(12, 12.0);
+                new Lobo<>(12, 12.0, 1);
 
         PoblacionWsa<Integer> poblacion =
                 new PoblacionWsa<>(
@@ -231,7 +231,7 @@ class VisionWsaTest {
                 crearParametros();
 
         Lobo<Integer> referencia =
-                new Lobo<>(10, 10.0);
+                new Lobo<>(10, 10.0, 1);
 
         PoblacionWsa<Integer> poblacion =
                 new PoblacionWsa<>(
@@ -269,7 +269,7 @@ class VisionWsaTest {
         PoblacionWsa<Integer> poblacion =
                 new PoblacionWsa<>(
                         List.of(
-                                new Lobo<>(0, 0.0)
+                                new Lobo<>(0, 0.0, 1)
                         )
                 );
 
@@ -292,7 +292,7 @@ class VisionWsaTest {
                 );
 
         Lobo<Integer> lobo =
-                new Lobo<>(0, 0.0);
+                new Lobo<>(0, 0.0, 1);
 
         assertThrows(
                 IllegalArgumentException.class,
@@ -347,7 +347,10 @@ class VisionWsaTest {
                 100,
                 3,
                 0.1,
-                12345L
+                12345L,
+                1,
+                1,
+                1
         );
     }
 }

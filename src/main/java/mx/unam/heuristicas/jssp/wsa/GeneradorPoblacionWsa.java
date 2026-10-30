@@ -250,7 +250,7 @@ public final class GeneradorPoblacionWsa<S> {
                 double costo = problema.funcionCosto(
                                 solucion);
 
-                lobos.add(new Lobo<>(solucion,costo));
+                lobos.add(new Lobo<>(solucion,costo,this.parametros.tamanoMemoria()));
 
                 solucionesUtilizadas.add(solucion);
         }

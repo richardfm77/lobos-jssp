@@ -300,7 +300,10 @@ class GeneradorPoblacionWsaTest {
                         10,
                         1,
                         0.1,
-                        12345L
+                        12345L,
+                        1,
+                        1,
+                        1
                 );
 
         GeneradorPoblacionWsa<Integer> generador =
@@ -327,7 +330,10 @@ class GeneradorPoblacionWsaTest {
                 100,
                 3,
                 0.1,
-                12345L
+                12345L,
+                1,
+                1,
+                1
         );
     }
 

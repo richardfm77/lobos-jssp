@@ -6,7 +6,10 @@ public record ParametrosWsa(
         int numeroIteracionesGeneracionPoblacion,
         int rangoVisual,
         double probabilidadAmenaza,
-        long semilla
+        long semilla,
+        int maxIntentosEscape,
+        int tamanoMemoria,
+        int maxIntentosMovimiento
 ) {
 
     public ParametrosWsa {
@@ -40,6 +43,24 @@ public record ParametrosWsa(
 
             throw new IllegalArgumentException(
                     "La probabilidad de amenaza debe estar entre 0 y 1."
+            );
+        }
+
+        if (maxIntentosEscape <= 0) {
+            throw new IllegalArgumentException(
+                    "El número máximo de intentos de escape debe ser mayor que cero."
+            );
+        }
+
+        if (tamanoMemoria <= 0) {
+            throw new IllegalArgumentException(
+                "El tamaño de la memoria debe ser mayor que cero."
+            );
+        }
+
+        if (maxIntentosMovimiento <= 0) {
+            throw new IllegalArgumentException(
+                "El número máximo de intentos de movimiento debe ser mayor que cero."
             );
         }
     }
