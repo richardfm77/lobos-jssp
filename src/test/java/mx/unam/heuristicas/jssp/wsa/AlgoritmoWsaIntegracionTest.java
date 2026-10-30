@@ -60,7 +60,7 @@ class AlgoritmoWsaIntegracionTest {
          * costo = 1
          */
         SolucionJssp solucionBase = GeneradorSolucionJssp
-                .generarSolucionCotaSuperior(
+                .generarSolucionInicialPorCapas(
                         instancia);
 
         double costoBase = problema.funcionCosto(
@@ -159,7 +159,7 @@ class AlgoritmoWsaIntegracionTest {
                 generadorPrimeraCorrida);
 
         SolucionJssp primeraBase = GeneradorSolucionJssp
-                .generarSolucionCotaSuperior(
+                .generarSolucionInicialPorCapas(
                         instancia);
 
         ResultadoWsa<SolucionJssp> primerResultado = primerAlgoritmo.ejecutar(
@@ -186,7 +186,7 @@ class AlgoritmoWsaIntegracionTest {
                 generadorSegundaCorrida);
 
         SolucionJssp segundaBase = GeneradorSolucionJssp
-                .generarSolucionCotaSuperior(
+                .generarSolucionInicialPorCapas(
                         instancia);
 
         ResultadoWsa<SolucionJssp> segundoResultado = segundoAlgoritmo.ejecutar(

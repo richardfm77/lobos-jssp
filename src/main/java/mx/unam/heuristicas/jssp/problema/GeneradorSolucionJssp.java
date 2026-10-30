@@ -70,24 +70,23 @@ public final class GeneradorSolucionJssp {
     }
 
     /**
-     * Genera la solución asociada al procedimiento utilizado para calcular
-     * la cota superior de una instancia JSSP.
+     * Genera una solución inicial recorriendo las operaciones por capas.
      *
-     * Las operaciones se recorren por nivel: primero se considera la primera
-     * operación de cada trabajo, después la segunda operación de cada trabajo
-     * y así sucesivamente hasta procesar todas las operaciones.
+     * Primero se considera la primera operación de cada trabajo, después
+     * la segunda operación de cada trabajo y así sucesivamente hasta
+     * procesar todas las operaciones de la instancia.
      *
      * Cada operación se agrega a la secuencia correspondiente a la máquina
-     * que debe procesarla, conservando dicho orden de recorrido.
+     * que debe procesarla, conservando el orden definido por dicho recorrido.
      *
-     * La solución generada es factible y su makespan corresponde a la
-     * cota superior calculada mediante este procedimiento.
+     * Esta estrategia permite construir una solución factible y generalmente
+     * de mejor calidad que una agrupación directa por máquina, por lo que puede
+     * utilizarse como solución base para inicializar la población de WSA.
      *
      * @param instancia instancia del problema JSSP
-     * @return solución cuya cadena de máquinas corresponde a la construcción
-     *         utilizada para obtener la cota superior
+     * @return solución inicial construida mediante un recorrido por capas
      */
-    public static SolucionJssp generarSolucionCotaSuperior(
+    public static SolucionJssp generarSolucionInicialPorCapas(
             InstanciaJssp instancia) {
 
         if (instancia == null) {

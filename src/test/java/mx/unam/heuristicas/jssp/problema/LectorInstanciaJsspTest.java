@@ -35,7 +35,7 @@ class LectorInstanciaJsspTest {
         );
 
         assertEquals(
-                12,
+                24,
                 instancia.cotaSuperior()
         );
 
@@ -107,7 +107,7 @@ class LectorInstanciaJsspTest {
         );
 
         assertEquals(
-                205,
+                3251,
                 instancia.cotaSuperior()
         );
 
@@ -179,7 +179,7 @@ class LectorInstanciaJsspTest {
         );
 
         assertEquals(
-                125341,
+                5008631,
                 instancia.cotaSuperior()
         );
 

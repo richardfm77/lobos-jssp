@@ -33,7 +33,7 @@ class CalculadoraCotasJsspTest {
                                 .calcularCotaSuperior(instancia);
 
                 assertEquals(
-                                12,
+                                24,
                                 cotaSuperior);
         }
 
@@ -50,7 +50,7 @@ class CalculadoraCotasJsspTest {
                                 cotas.cotaInferior());
 
                 assertEquals(
-                                12,
+                                24,
                                 cotas.cotaSuperior());
         }
 
@@ -120,7 +120,7 @@ class CalculadoraCotasJsspTest {
                                 .calcularCotaSuperior(instancia);
 
                 assertEquals(
-                                205,
+                                3251,
                                 cotaSuperior);
         }
 
@@ -137,7 +137,7 @@ class CalculadoraCotasJsspTest {
                                 cotas.cotaInferior());
 
                 assertEquals(
-                                205,
+                                3251,
                                 cotas.cotaSuperior());
         }
 
@@ -180,7 +180,7 @@ class CalculadoraCotasJsspTest {
                                 .calcularCotaSuperior(instancia);
 
                 assertEquals(
-                                125341,
+                                5008631,
                                 cotaSuperior);
         }
 
@@ -197,7 +197,7 @@ class CalculadoraCotasJsspTest {
                                 cotas.cotaInferior());
 
                 assertEquals(
-                                125341,
+                                5008631,
                                 cotas.cotaSuperior());
         }
 

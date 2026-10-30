@@ -6,10 +6,6 @@ import mx.unam.heuristicas.jssp.problema.modelo.InstanciaJssp;
 import mx.unam.heuristicas.jssp.problema.modelo.Operacion;
 import mx.unam.heuristicas.jssp.problema.modelo.Trabajo;
 
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 public final class CalculadoraCotasJssp {
 
     private CalculadoraCotasJssp() {
@@ -77,48 +73,14 @@ public final class CalculadoraCotasJssp {
                     "La instancia JSSP no puede ser nula.");
         }
 
-        int[] finTrabajos = new int[instancia.numeroTrabajos()];
-
-        int[] finMaquinas = new int[instancia.numeroMaquinas()];
-
-        Map<Integer, Iterator<Operacion>> iteradores = new LinkedHashMap<>();
+        int cotaSuperior = 0;
 
         for (Trabajo trabajo : instancia.trabajos()) {
 
-            iteradores.put(
-                    trabajo.id(),
-                    trabajo.operaciones().iterator());
-        }
+            for (Operacion operacion : trabajo.operaciones()) {
 
-        for (int indiceOperacion = 0; indiceOperacion < instancia.numeroMaquinas(); indiceOperacion++) {
-
-            for (Map.Entry<Integer, Iterator<Operacion>> entrada : iteradores.entrySet()) {
-
-                int idTrabajo = entrada.getKey();
-
-                Operacion operacion = entrada.getValue().next();
-
-                int idMaquina = operacion.idMaquina();
-
-                int tiempoInicio = Math.max(
-                        finTrabajos[idTrabajo],
-                        finMaquinas[idMaquina]);
-
-                int tiempoFin = tiempoInicio
-                        + operacion.tiempoProceso();
-
-                finTrabajos[idTrabajo] = tiempoFin;
-
-                finMaquinas[idMaquina] = tiempoFin;
+                cotaSuperior += operacion.tiempoProceso();
             }
-        }
-
-        int cotaSuperior = 0;
-
-        for (int tiempoFin : finTrabajos) {
-            cotaSuperior = Math.max(
-                    cotaSuperior,
-                    tiempoFin);
         }
 
         return cotaSuperior;

@@ -52,7 +52,7 @@ class EvaluadorGraficaJsspTest {
 
         SolucionJssp solucion =
                 GeneradorSolucionJssp
-                        .generarSolucionCotaSuperior(instancia);
+                        .generarSolucionInicialPorCapas(instancia);
 
         GraficaDirigida<Operacion> grafica =
                 ConstructorGraficaJssp.construir(

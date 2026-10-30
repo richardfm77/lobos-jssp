@@ -19,13 +19,13 @@ import java.util.Iterator;
 class ProblemaJsspTest {
 
         @Test
-        void calculaCorrectamenteCostoSolucionCotaSuperior40x40() {
+        void calculaCorrectamenteCostoSolucionInicialPorCapas40x40() {
 
                 InstanciaJssp instancia = UtilTest.obtenerInstancia(
                                 "JSSP_40_40.txt");
 
                 SolucionJssp solucion = GeneradorSolucionJssp
-                                .generarSolucionCotaSuperior(
+                                .generarSolucionInicialPorCapas(
                                                 instancia);
 
                 ProblemaJssp problema = new ProblemaJssp(instancia);
@@ -33,9 +33,12 @@ class ProblemaJsspTest {
                 double costo = problema.funcionCosto(
                                 solucion);
 
+                double costoEsperado = (205.0 - 103.0)
+                                / (3251.0 - 103.0);
+
                 assertTrue(
                                 DoublePrecision.equals(
-                                                1.0,
+                                                costoEsperado,
                                                 costo));
         }
 
@@ -67,7 +70,7 @@ class ProblemaJsspTest {
                                 "JSSP_40_40.txt");
 
                 SolucionJssp solucion = GeneradorSolucionJssp
-                                .generarSolucionCotaSuperior(
+                                .generarSolucionInicialPorCapas(
                                                 instancia);
 
                 ProblemaJssp problema = new ProblemaJssp(
@@ -163,7 +166,7 @@ class ProblemaJsspTest {
                                 new Random(12345L));
 
                 SolucionJssp actual = GeneradorSolucionJssp
-                                .generarSolucionCotaSuperior(
+                                .generarSolucionInicialPorCapas(
                                                 instancia);
 
                 SolucionJssp objetivo = actual;
@@ -198,7 +201,7 @@ class ProblemaJsspTest {
                                 "JSSP_40_40.txt");
 
                 SolucionJssp solucion = GeneradorSolucionJssp
-                                .generarSolucionCotaSuperior(
+                                .generarSolucionInicialPorCapas(
                                                 instancia);
 
                 ProblemaJssp problema = new ProblemaJssp(instancia);
@@ -220,7 +223,7 @@ class ProblemaJsspTest {
                                 "JSSP_40_40.txt");
 
                 SolucionJssp solucion = GeneradorSolucionJssp
-                                .generarSolucionCotaSuperior(
+                                .generarSolucionInicialPorCapas(
                                                 instancia);
 
                 ProblemaJssp problema = new ProblemaJssp(
@@ -246,7 +249,7 @@ class ProblemaJsspTest {
                                 "JSSP_40_40.txt");
 
                 SolucionJssp primera = GeneradorSolucionJssp
-                                .generarSolucionCotaSuperior(
+                                .generarSolucionInicialPorCapas(
                                                 instancia);
 
                 ProblemaJssp problema = new ProblemaJssp(
