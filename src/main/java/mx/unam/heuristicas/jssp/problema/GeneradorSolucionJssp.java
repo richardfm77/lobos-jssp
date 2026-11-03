@@ -1,13 +1,16 @@
 package mx.unam.heuristicas.jssp.problema;
 
+import mx.unam.heuristicas.jssp.estructura.GraficaDirigida;
 import mx.unam.heuristicas.jssp.excepcion.ExcepcionAplicacion;
 import mx.unam.heuristicas.jssp.problema.modelo.InstanciaJssp;
 import mx.unam.heuristicas.jssp.problema.modelo.Operacion;
+import mx.unam.heuristicas.jssp.problema.modelo.ResultadoEvaluacionJssp;
 import mx.unam.heuristicas.jssp.problema.modelo.SecuenciaMaquina;
 import mx.unam.heuristicas.jssp.problema.modelo.SolucionJssp;
 import mx.unam.heuristicas.jssp.problema.modelo.Trabajo;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -133,5 +136,107 @@ public final class GeneradorSolucionJssp {
         }
 
         return new SolucionJssp(secuencias);
+    }
+
+    /**
+     * Genera una solución no factible a partir de una solución inicial.
+     *
+     * La solución conserva todas las operaciones en las máquinas
+     * correspondientes, pero se busca alterar el orden de alguna
+     * máquina de manera que la gráfica resultante contenga al
+     * menos un ciclo.
+     *
+     * @param instancia instancia del problema JSSP
+     * @return solución cuya gráfica contiene al menos un ciclo
+     * @throws ExcepcionAplicacion si no se encuentra una solución
+     *                             no factible mediante un intercambio
+     */
+    public static SolucionJssp generarNoFactible(
+            InstanciaJssp instancia) {
+
+        if (instancia == null) {
+            throw new ExcepcionAplicacion(
+                    "La instancia JSSP no puede ser nula.");
+        }
+
+        SolucionJssp solucionBase = generarSolucionInicialPorCapas(
+                instancia);
+
+        for (SecuenciaMaquina secuencia : solucionBase.secuenciasMaquinas()) {
+
+            ArrayList<Operacion> operaciones = new ArrayList<>(
+                    secuencia.operaciones());
+
+            for (int i = 0; i < operaciones.size() - 1; i++) {
+
+                for (int j = i + 1; j < operaciones.size(); j++) {
+
+                    Collections.swap(
+                            operaciones,
+                            i,
+                            j);
+
+                    SolucionJssp candidata = reemplazarSecuencia(
+                            solucionBase,
+                            secuencia.idMaquina(),
+                            operaciones);
+
+                    GraficaDirigida<Operacion> grafica = ConstructorGraficaJssp.construir(
+                            instancia,
+                            candidata);
+
+                    ResultadoEvaluacionJssp evaluacion = EvaluadorGraficaJssp.evaluar(
+                            grafica);
+
+                    if (evaluacion.verticesEnCiclo() > 0) {
+                        return candidata;
+                    }
+
+                    /*
+                     * Deshacemos el intercambio antes
+                     * de probar el siguiente par.
+                     */
+                    Collections.swap(
+                            operaciones,
+                            i,
+                            j);
+                }
+            }
+        }
+
+        throw new ExcepcionAplicacion(
+                "No se pudo generar una solución no factible "
+                        + "mediante un solo intercambio.");
+    }
+
+    private static SolucionJssp reemplazarSecuencia(
+            SolucionJssp solucion,
+            int idMaquina,
+            List<Operacion> nuevasOperaciones) {
+
+        List<SecuenciaMaquina> nuevasSecuencias = new ArrayList<>();
+
+        for (SecuenciaMaquina secuencia : solucion.secuenciasMaquinas()) {
+
+            if (secuencia.idMaquina() == idMaquina) {
+
+                nuevasSecuencias.add(
+                        new SecuenciaMaquina(
+                                idMaquina,
+                                new ArrayList<>(
+                                        nuevasOperaciones)));
+
+            } else {
+
+                nuevasSecuencias.add(
+                        new SecuenciaMaquina(
+                                secuencia.idMaquina(),
+                                new ArrayList<>(
+                                        secuencia.operaciones())));
+            }
+        }
+
+        return new SolucionJssp(
+                nuevasSecuencias);
     }
 }

@@ -1,10 +1,14 @@
 package mx.unam.heuristicas.jssp.problema;
 
 import mx.unam.heuristicas.jssp.UtilTest;
+import mx.unam.heuristicas.jssp.estructura.GraficaDirigida;
 import mx.unam.heuristicas.jssp.excepcion.ExcepcionAplicacion;
 import mx.unam.heuristicas.jssp.problema.modelo.InstanciaJssp;
+import mx.unam.heuristicas.jssp.problema.modelo.Operacion;
+import mx.unam.heuristicas.jssp.problema.modelo.ResultadoEvaluacionJssp;
 import mx.unam.heuristicas.jssp.problema.modelo.SecuenciaMaquina;
 import mx.unam.heuristicas.jssp.problema.modelo.SolucionJssp;
+import mx.unam.heuristicas.jssp.util.DoublePrecision;
 
 import org.junit.jupiter.api.Test;
 
@@ -65,6 +69,33 @@ class GeneradorSolucionJsspTest {
                         .get(2)
                         .idTrabajo()
         );
+    }
+
+    @Test
+    void generaUnaSolucionNoFactible() {
+
+            InstanciaJssp instancia = UtilTest.obtenerInstancia(
+                            "JSSP_50_20.txt");
+
+            ProblemaJssp problema = new ProblemaJssp(instancia);
+
+            SolucionJssp solucion = GeneradorSolucionJssp
+                            .generarNoFactible(
+                                            instancia);
+
+            GraficaDirigida<Operacion> grafica = ConstructorGraficaJssp.construir(
+                            instancia,
+                            solucion);
+
+            ResultadoEvaluacionJssp evaluacion = EvaluadorGraficaJssp.evaluar(
+                            grafica);
+
+            assertTrue(
+                            evaluacion.verticesEnCiclo() > 0);
+            assertTrue(
+                            DoublePrecision.greaterThanOrEqual(
+                                            problema.funcionCosto(solucion),
+                                            1.0));
     }
 
     @Test
