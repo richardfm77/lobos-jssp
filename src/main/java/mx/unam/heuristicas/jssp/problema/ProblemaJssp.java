@@ -56,8 +56,9 @@ public final class ProblemaJssp
                 }
 
                 this.instancia = instancia;
-                this.cotas = CalculadoraCotasJssp.calcular(instancia);
-
+                this.cotas = new CotasJssp(
+                                instancia.cotaSuperior(),
+                                instancia.cotaInferior());
                 this.generadorAleatorio = generadorAleatorio;
         }
 

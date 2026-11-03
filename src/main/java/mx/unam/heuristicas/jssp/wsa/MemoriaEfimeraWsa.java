@@ -1,25 +1,24 @@
 package mx.unam.heuristicas.jssp.wsa;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 public final class MemoriaEfimeraWsa<S> {
 
     private final int capacidad;
-    private final Deque<S> soluciones;
+    private final Set<S> soluciones;
 
     public MemoriaEfimeraWsa(
-            int capacidad
-    ) {
+            int capacidad) {
 
         if (capacidad <= 0) {
             throw new IllegalArgumentException(
-                    "La capacidad de la memoria debe ser mayor que cero."
-            );
+                    "La capacidad de la memoria debe ser mayor que cero.");
         }
 
         this.capacidad = capacidad;
-        this.soluciones = new ArrayDeque<>();
+        this.soluciones = new LinkedHashSet<>();
     }
 
     /**
@@ -32,40 +31,40 @@ public final class MemoriaEfimeraWsa<S> {
      * @param solucion solución visitada
      */
     public void registrar(
-            S solucion
-    ) {
+            S solucion) {
 
         if (solucion == null) {
             throw new IllegalArgumentException(
-                    "La solución no puede ser nula."
-            );
+                    "La solución no puede ser nula.");
+        }
+
+        if (soluciones.remove(solucion)) {
+            soluciones.add(solucion);
+            return;
         }
 
         if (soluciones.size() == capacidad) {
-            soluciones.removeFirst();
+            Iterator<S> iterador = soluciones.iterator();
+            iterador.next();
+            iterador.remove();
         }
 
-        soluciones.addLast(
-                solucion
-        );
+        soluciones.add(solucion);
     }
 
     /**
      * Indica si una solución pertenece a la memoria reciente.
      */
     public boolean contiene(
-            S solucion
-    ) {
+            S solucion) {
 
         if (solucion == null) {
             throw new IllegalArgumentException(
-                    "La solución no puede ser nula."
-            );
+                    "La solución no puede ser nula.");
         }
 
         return soluciones.contains(
-                solucion
-        );
+                solucion);
     }
 
     public int tamano() {
