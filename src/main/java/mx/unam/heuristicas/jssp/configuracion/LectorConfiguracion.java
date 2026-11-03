@@ -86,16 +86,62 @@ public final class LectorConfiguracion {
 
 
     /**
-     * Obtiene la ruta completa del archivo que será 
+     * Obtiene la ruta completa del directorio donde será
      * generado como salida del sistema.
      *
-     * @return ruta completa de la solución generada.
+     * @return ruta completa del directorio de salida.
      */
     public Path obtenerRutaSalida() {
-            String archivo = obtenerPropiedad(
-                            "salida.archivo");
+            String directorio = obtenerPropiedad(
+                            "salida.ruta");
 
-            return Path.of(archivo);
+            return Path.of(directorio);
+    }
+
+    /**
+     * Obtiene el nombre del archivo donde se registrarán las evaluaciones
+     * aceptadas.
+     *
+     * @return nombre del archivo de evaluaciones aceptadas
+     */
+    public String obtenerNombreReporteEvaluacionesAceptadas() {
+            return obtenerPropiedad(
+                            "salida.nombreReporteEvaluacionesAceptadas");
+    }
+
+    /**
+     * Obtiene el nombre del archivo donde se guardará la solución encontrada.
+     *
+     * @return nombre del archivo de solución
+     */
+    public String obtenerNombreReporteSolucion() {
+            return obtenerPropiedad(
+                            "salida.nombreSolcucion");
+    }
+
+    /**
+     * Indica si se debe mostrar el registro de la ejecución
+     * en la consola.
+     *
+     * @return true si se debe mostrar el registro, false en caso contrario
+     */
+    public boolean mostrarRegistroConsola() {
+
+            return Boolean.parseBoolean(
+                            obtenerPropiedad(
+                                            "registro.mostrarConsola"));
+    }
+
+    /**
+     * Obtiene la frecuencia con la que se debe registrar
+     * el progreso de la ejecución.
+     *
+     * @return frecuencia de registro
+     */
+    public int obtenerFrecuenciaRegistro() {
+
+            return obtenerEntero(
+                            "registro.frecuenciaIteraciones");
     }
 
     /**

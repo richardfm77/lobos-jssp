@@ -15,6 +15,7 @@ import mx.unam.heuristicas.jssp.problema.modelo.ResultadoEvaluacionJssp;
 import mx.unam.heuristicas.jssp.problema.modelo.SolucionJssp;
 import mx.unam.heuristicas.jssp.wsa.AlgoritmoWsa;
 import mx.unam.heuristicas.jssp.wsa.ParametrosWsa;
+import mx.unam.heuristicas.jssp.wsa.RegistroEjecucionWsa;
 import mx.unam.heuristicas.jssp.wsa.ResultadoWsa;
 
 import java.nio.file.InvalidPathException;
@@ -56,6 +57,7 @@ public final class App {
                                                         + args[0]);
                 }
 
+                RegistroEjecucionWsa registro = null;
                 try {
                         LectorConfiguracion configuracion = LectorConfiguracion.leer(
                                         rutaConfiguracion);
@@ -66,8 +68,20 @@ public final class App {
                         Path rutaSalida = configuracion
                                         .obtenerRutaSalida();
 
+                        String nombreArchivoSolucion = configuracion
+                                        .obtenerNombreReporteSolucion();
+
+                        String nombreArchivoEvaluacionesAceptadas = configuracion
+                                        .obtenerNombreReporteEvaluacionesAceptadas();
+
                         ParametrosWsa parametros = configuracion
                                         .obtenerParametrosWsa();
+
+                        registro = new RegistroEjecucionWsa(
+                                        nombreArchivoEvaluacionesAceptadas,
+                                        rutaSalida,
+                                        configuracion.mostrarRegistroConsola(),
+                                        configuracion.obtenerFrecuenciaRegistro());
 
                         /*
                          * Lectura de la instancia.
@@ -126,6 +140,7 @@ public final class App {
                                         costoInicial,
                                         evaluacionInicial);
 
+                        registro.registrarInicial(costoInicial);
                         /*
                          * Ejecución de WSA.
                          */
@@ -158,7 +173,9 @@ public final class App {
                          */
                         EscritorSolucionJssp.escribir(
                                         mejorSolucion,
-                                        rutaSalida);
+                                        Path.of(
+                                                        rutaSalida.toString(),
+                                                        nombreArchivoSolucion));
 
                         /*
                          * Resultados finales.
@@ -175,7 +192,7 @@ public final class App {
                         System.out.println();
 
                         System.out.println(
-                                        "Archivo de solución generado en:");
+                                        "Archivo de solución y reporte de evaluaciones generados en:");
 
                         System.out.println(
                                         rutaSalida
@@ -190,6 +207,10 @@ public final class App {
                         salidaConError(
                                         "Ocurrió un error durante la ejecución: "
                                                         + e.getMessage());
+                } finally {
+                        if (registro != null) {
+                                registro.close();
+                        }
                 }
         }
 
