@@ -84,6 +84,20 @@ public final class LectorConfiguracion {
         );
     }
 
+
+    /**
+     * Obtiene la ruta completa del archivo que será 
+     * generado como salida del sistema.
+     *
+     * @return ruta completa de la solución generada.
+     */
+    public Path obtenerRutaSalida() {
+            String archivo = obtenerPropiedad(
+                            "salida.archivo");
+
+            return Path.of(archivo);
+    }
+
     /**
      * Construye los parámetros del algoritmo WSA a partir
      * de las propiedades configuradas.
