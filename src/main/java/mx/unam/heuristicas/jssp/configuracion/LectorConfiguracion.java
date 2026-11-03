@@ -145,6 +145,16 @@ public final class LectorConfiguracion {
     }
 
     /**
+     * Obtiene el tipo de solución a generar.
+     *
+     * @return tipo de solución
+     */
+    public String obtenerTipoSolucion() {
+            return obtenerPropiedad(
+                            "solucion.tipo");
+    }
+
+    /**
      * Construye los parámetros del algoritmo WSA a partir
      * de las propiedades configuradas.
      *

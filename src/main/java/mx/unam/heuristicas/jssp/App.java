@@ -14,6 +14,7 @@ import mx.unam.heuristicas.jssp.problema.modelo.Operacion;
 import mx.unam.heuristicas.jssp.problema.modelo.ResultadoEvaluacionJssp;
 import mx.unam.heuristicas.jssp.problema.modelo.SolucionJssp;
 import mx.unam.heuristicas.jssp.wsa.AlgoritmoWsa;
+import mx.unam.heuristicas.jssp.wsa.EnumTipoSolucion;
 import mx.unam.heuristicas.jssp.wsa.ParametrosWsa;
 import mx.unam.heuristicas.jssp.wsa.RegistroEjecucionWsa;
 import mx.unam.heuristicas.jssp.wsa.ResultadoWsa;
@@ -74,6 +75,9 @@ public final class App {
                         String nombreArchivoEvaluacionesAceptadas = configuracion
                                         .obtenerNombreReporteEvaluacionesAceptadas();
 
+                        String tipoSolucion = configuracion
+                                        .obtenerTipoSolucion();
+
                         ParametrosWsa parametros = configuracion
                                         .obtenerParametrosWsa();
 
@@ -109,14 +113,16 @@ public final class App {
                         AlgoritmoWsa<SolucionJssp> algoritmo = new AlgoritmoWsa<>(
                                         problema,
                                         parametros,
-                                        generadorAleatorio);
+                                        generadorAleatorio,
+                                        registro);
 
                         /*
                          * Generación de la solución inicial.
                          */
                         SolucionJssp solucionInicial = GeneradorSolucionJssp
-                                        .generarSolucionInicialPorCapas(
-                                                        instancia);
+                                        .generaTipoSolucion(
+                                                        instancia,
+                                                        EnumTipoSolucion.fromString(tipoSolucion));
 
                         double costoInicial = problema.funcionCosto(
                                         solucionInicial);

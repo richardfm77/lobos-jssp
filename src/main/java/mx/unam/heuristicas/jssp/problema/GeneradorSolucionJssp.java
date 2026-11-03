@@ -8,6 +8,7 @@ import mx.unam.heuristicas.jssp.problema.modelo.ResultadoEvaluacionJssp;
 import mx.unam.heuristicas.jssp.problema.modelo.SecuenciaMaquina;
 import mx.unam.heuristicas.jssp.problema.modelo.SolucionJssp;
 import mx.unam.heuristicas.jssp.problema.modelo.Trabajo;
+import mx.unam.heuristicas.jssp.wsa.EnumTipoSolucion;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,6 +20,29 @@ import java.util.Map;
 public final class GeneradorSolucionJssp {
 
     private GeneradorSolucionJssp() {
+    }
+
+    public static SolucionJssp generaTipoSolucion(
+            InstanciaJssp instancia,
+            EnumTipoSolucion tipo) {
+
+        if (tipo == null) {
+            throw new ExcepcionAplicacion(
+                    "El tipo de solución no puede ser nulo.");
+        }
+
+        switch (tipo) {
+            case NORMAL:
+                return generarInicial(instancia);
+            case FACTIBLE:
+                return generarSolucionInicialPorCapas(instancia);
+            case NO_FACTIBLE:
+                return generarNoFactible(instancia);
+            default:
+                throw new ExcepcionAplicacion(
+                        "Tipo de solución no soportado: "
+                                + tipo);
+        }
     }
 
     /**
