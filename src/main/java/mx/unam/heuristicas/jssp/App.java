@@ -2,6 +2,7 @@ package mx.unam.heuristicas.jssp;
 
 import mx.unam.heuristicas.jssp.configuracion.LectorConfiguracion;
 import mx.unam.heuristicas.jssp.estructura.GraficaDirigida;
+import mx.unam.heuristicas.jssp.excepcion.ExcepcionAplicacion;
 import mx.unam.heuristicas.jssp.problema.ConstructorGraficaJssp;
 import mx.unam.heuristicas.jssp.problema.EscritorSolucionJssp;
 import mx.unam.heuristicas.jssp.problema.EvaluadorGraficaJssp;
@@ -16,6 +17,7 @@ import mx.unam.heuristicas.jssp.wsa.AlgoritmoWsa;
 import mx.unam.heuristicas.jssp.wsa.ParametrosWsa;
 import mx.unam.heuristicas.jssp.wsa.ResultadoWsa;
 
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.util.Random;
 import java.util.random.RandomGenerator;
@@ -31,148 +33,164 @@ public final class App {
         public static void main(String[] args) {
 
                 if (args.length != 1) {
-
-                        System.err.println(
+                        salidaConError(
                                         "Uso: java -jar jssp.jar <archivo.properties>");
-
-                        return;
                 }
 
-                /*
-                 * Lectura de configuración.
-                 */
-                Path rutaConfiguracion = Path.of(
-                                args[0]);
+                if (args[0].equals("-h") || args[0].equals("--help")) {
+                        System.out.println(
+                                        "Uso: java -jar jssp.jar <archivo.properties>");
+                        System.exit(0);
+                }
 
-                LectorConfiguracion configuracion = LectorConfiguracion.leer(
-                                rutaConfiguracion);
+                Path rutaConfiguracion = null;
 
-                Path rutaInstancia = configuracion
-                                .obtenerRutaInstancia();
+                try {
+                        /*
+                         * Lectura de configuración.
+                         */
+                        rutaConfiguracion = Path.of(args[0]);
+                } catch (InvalidPathException i) {
+                        salidaConError(
+                                        "Ruta de archivo inválida: "
+                                                        + args[0]);
+                }
 
-                Path rutaSalida = configuracion
-                                .obtenerRutaSalida();
+                try {
+                        LectorConfiguracion configuracion = LectorConfiguracion.leer(
+                                        rutaConfiguracion);
 
-                ParametrosWsa parametros = configuracion
-                                .obtenerParametrosWsa();
+                        Path rutaInstancia = configuracion
+                                        .obtenerRutaInstancia();
 
-                /*
-                 * Lectura de la instancia.
-                 */
-                InstanciaJssp instancia = LectorInstanciaJssp.leer(
-                                rutaInstancia);
+                        Path rutaSalida = configuracion
+                                        .obtenerRutaSalida();
 
-                /*
-                 * Un único generador aleatorio maestro
-                 * para toda la corrida.
-                 */
-                RandomGenerator generadorAleatorio = new Random(
-                                parametros.semilla());
+                        ParametrosWsa parametros = configuracion
+                                        .obtenerParametrosWsa();
 
-                /*
-                 * Construcción del problema.
-                 */
-                ProblemaJssp problema = new ProblemaJssp(
-                                instancia,
-                                generadorAleatorio);
+                        /*
+                         * Lectura de la instancia.
+                         */
+                        InstanciaJssp instancia = LectorInstanciaJssp.leer(
+                                        rutaInstancia);
 
-                /*
-                 * Construcción del algoritmo WSA.
-                 */
-                AlgoritmoWsa<SolucionJssp> algoritmo = new AlgoritmoWsa<>(
-                                problema,
-                                parametros,
-                                generadorAleatorio);
+                        /*
+                         * Un único generador aleatorio maestro
+                         * para toda la corrida.
+                         */
+                        RandomGenerator generadorAleatorio = new Random(
+                                        parametros.semilla());
 
-                /*
-                 * Generación de la solución inicial.
-                 */
-                SolucionJssp solucionInicial = GeneradorSolucionJssp
-                                .generarSolucionInicialPorCapas(
-                                                instancia);
+                        /*
+                         * Construcción del problema.
+                         */
+                        ProblemaJssp problema = new ProblemaJssp(
+                                        instancia,
+                                        generadorAleatorio);
 
-                double costoInicial = problema.funcionCosto(
-                                solucionInicial);
+                        /*
+                         * Construcción del algoritmo WSA.
+                         */
+                        AlgoritmoWsa<SolucionJssp> algoritmo = new AlgoritmoWsa<>(
+                                        problema,
+                                        parametros,
+                                        generadorAleatorio);
 
-                ResultadoEvaluacionJssp evaluacionInicial = evaluarSolucion(
-                                instancia,
-                                solucionInicial);
+                        /*
+                         * Generación de la solución inicial.
+                         */
+                        SolucionJssp solucionInicial = GeneradorSolucionJssp
+                                        .generarSolucionInicialPorCapas(
+                                                        instancia);
 
-                /*
-                 * Información inicial de la corrida.
-                 */
-                imprimirConfiguracion(
-                                rutaConfiguracion,
-                                rutaInstancia,
-                                rutaSalida,
-                                instancia,
-                                parametros);
+                        double costoInicial = problema.funcionCosto(
+                                        solucionInicial);
 
-                imprimirResultado(
-                                "SOLUCIÓN INICIAL",
-                                costoInicial,
-                                evaluacionInicial);
+                        ResultadoEvaluacionJssp evaluacionInicial = evaluarSolucion(
+                                        instancia,
+                                        solucionInicial);
 
-                /*
-                 * Ejecución de WSA.
-                 */
-                System.out.println();
-                System.out.println(
-                                "Ejecutando Wolf Search Algorithm...");
-                System.out.println();
+                        /*
+                         * Información inicial de la corrida.
+                         */
+                        imprimirConfiguracion(
+                                        rutaConfiguracion,
+                                        rutaInstancia,
+                                        rutaSalida,
+                                        instancia,
+                                        parametros);
 
-                long inicio = System.nanoTime();
+                        imprimirResultado(
+                                        "SOLUCIÓN INICIAL",
+                                        costoInicial,
+                                        evaluacionInicial);
 
-                ResultadoWsa<SolucionJssp> resultado = algoritmo.ejecutar(
-                                solucionInicial);
+                        /*
+                         * Ejecución de WSA.
+                         */
+                        System.out.println();
+                        System.out.println(
+                                        "Ejecutando Wolf Search Algorithm...");
+                        System.out.println();
 
-                long fin = System.nanoTime();
+                        long inicio = System.nanoTime();
 
-                double tiempoSegundos = (fin - inicio)
-                                / 1_000_000_000.0;
+                        ResultadoWsa<SolucionJssp> resultado = algoritmo.ejecutar(
+                                        solucionInicial);
 
-                /*
-                 * Mejor solución encontrada.
-                 */
-                SolucionJssp mejorSolucion = resultado.mejorSolucion();
+                        long fin = System.nanoTime();
 
-                ResultadoEvaluacionJssp evaluacionFinal = evaluarSolucion(
-                                instancia,
-                                mejorSolucion);
+                        double tiempoSegundos = (fin - inicio)
+                                        / 1_000_000_000.0;
 
-                /*
-                 * Escritura de la solución.
-                 */
-                EscritorSolucionJssp.escribir(
-                                mejorSolucion,
-                                rutaSalida);
+                        /*
+                         * Mejor solución encontrada.
+                         */
+                        SolucionJssp mejorSolucion = resultado.mejorSolucion();
 
-                /*
-                 * Resultados finales.
-                 */
-                imprimirResultado(
-                                "MEJOR SOLUCIÓN ENCONTRADA",
-                                resultado.mejorCosto(),
-                                evaluacionFinal);
+                        ResultadoEvaluacionJssp evaluacionFinal = evaluarSolucion(
+                                        instancia,
+                                        mejorSolucion);
 
-                System.out.printf(
-                                "Tiempo de ejecución: %.3f segundos%n",
-                                tiempoSegundos);
+                        /*
+                         * Escritura de la solución.
+                         */
+                        EscritorSolucionJssp.escribir(
+                                        mejorSolucion,
+                                        rutaSalida);
 
-                System.out.println();
+                        /*
+                         * Resultados finales.
+                         */
+                        imprimirResultado(
+                                        "MEJOR SOLUCIÓN ENCONTRADA",
+                                        resultado.mejorCosto(),
+                                        evaluacionFinal);
 
-                System.out.println(
-                                "Archivo de solución generado en:");
+                        System.out.printf(
+                                        "Tiempo de ejecución: %.3f segundos%n",
+                                        tiempoSegundos);
 
-                System.out.println(
-                                rutaSalida
-                                                .toAbsolutePath()
-                                                .normalize());
+                        System.out.println();
 
-                System.out.println();
+                        System.out.println(
+                                        "Archivo de solución generado en:");
 
-                System.out.println(
-                                "============================================================");
+                        System.out.println(
+                                        rutaSalida
+                                                        .toAbsolutePath()
+                                                        .normalize());
+
+                        System.out.println();
+
+                        System.out.println(
+                                        "============================================================");
+                } catch (ExcepcionAplicacion e) {
+                        salidaConError(
+                                        "Ocurrió un error durante la ejecución: "
+                                                        + e.getMessage());
+                }
         }
 
         /**
@@ -333,5 +351,12 @@ public final class App {
                 System.out.println(
                                 "Vértices en ciclo: "
                                                 + evaluacion.verticesEnCiclo());
+        }
+
+        private static void salidaConError(String error) {
+                System.err.println(
+                                "Error: "
+                                                + error);
+                System.exit(1);
         }
 }
