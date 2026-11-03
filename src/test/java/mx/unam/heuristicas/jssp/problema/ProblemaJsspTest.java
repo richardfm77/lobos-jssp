@@ -272,4 +272,71 @@ class ProblemaJsspTest {
                                                 distanciaPrimeraSegunda,
                                                 distanciaSegundaPrimera));
         }
+
+        @Test
+        void generaVecinoIntercambiandoOperacionesAdyacentes() {
+
+                InstanciaJssp instancia = UtilTest.obtenerInstancia(
+                                "JSSP_40_40.txt");
+
+                SolucionJssp solucion = GeneradorSolucionJssp
+                                .generarSolucionInicialPorCapas(
+                                                instancia);
+
+                ProblemaJssp problema = new ProblemaJssp(
+                                instancia,
+                                new Random(12345L));
+
+                SolucionJssp vecino = problema.generarVecino(
+                                solucion);
+
+                int primeraPosicionDiferente = -1;
+                int segundaPosicionDiferente = -1;
+
+                Iterator<SecuenciaMaquina> original = solucion.secuenciasMaquinas()
+                                .iterator();
+
+                Iterator<SecuenciaMaquina> modificada = vecino.secuenciasMaquinas()
+                                .iterator();
+
+                while (original.hasNext()
+                                && modificada.hasNext()) {
+
+                        SecuenciaMaquina secuenciaOriginal = original.next();
+
+                        SecuenciaMaquina secuenciaVecina = modificada.next();
+
+                        Iterator<Operacion> operacionesOriginales = secuenciaOriginal.operaciones()
+                                        .iterator();
+
+                        Iterator<Operacion> operacionesVecinas = secuenciaVecina.operaciones()
+                                        .iterator();
+
+                        int posicion = 0;
+
+                        while (operacionesOriginales.hasNext()
+                                        && operacionesVecinas.hasNext()) {
+
+                                if (!operacionesOriginales.next()
+                                                .equals(
+                                                                operacionesVecinas.next())) {
+
+                                        if (primeraPosicionDiferente == -1) {
+                                                primeraPosicionDiferente = posicion;
+                                        } else {
+                                                segundaPosicionDiferente = posicion;
+                                        }
+                                }
+
+                                posicion++;
+                        }
+                }
+
+                assertTrue(
+                                primeraPosicionDiferente >= 0);
+
+                assertEquals(
+                                primeraPosicionDiferente + 1,
+                                segundaPosicionDiferente);
+        }
 }

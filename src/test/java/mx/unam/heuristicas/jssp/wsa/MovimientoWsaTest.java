@@ -269,9 +269,9 @@ class MovimientoWsaTest {
         );
 
         assertEquals(
-                2,
-                llamadas[0]
-        );
+        crearParametros()
+                .maxIntentosMovimiento(),
+        llamadas[0]);
     }
 
     @Test
@@ -472,6 +472,156 @@ class MovimientoWsaTest {
                         null
                 )
         );
+    }
+
+    @Test
+    void seleccionaElMejorCandidatoAleatorio() {
+
+            int[] llamada = { 0 };
+
+            ProblemaHeuristico<Integer> problema = new ProblemaHeuristico<>() {
+
+                    @Override
+                    public double funcionCosto(
+                                    Integer solucion) {
+
+                            return solucion;
+                    }
+
+                    @Override
+                    public Integer generarVecino(
+                                    Integer solucion) {
+
+                            llamada[0]++;
+
+                            if (llamada[0] == 1) {
+                                    return 14;
+                            }
+
+                            if (llamada[0] == 2) {
+                                    return 7;
+                            }
+
+                            if (llamada[0] == 3) {
+                                    return 12;
+                            }
+
+                            return 9;
+                    }
+
+                    @Override
+                    public Integer generarVecinoHacia(
+                                    Integer solucion,
+                                    Integer objetivo) {
+
+                            return solucion;
+                    }
+
+                    @Override
+                    public double distancia(
+                                    Integer primera,
+                                    Integer segunda) {
+
+                            return Math.abs(
+                                            primera - segunda);
+                    }
+            };
+
+            Lobo<Integer> lobo = crearLobo(
+                            10,
+                            10.0);
+
+            PoblacionWsa<Integer> poblacion = new PoblacionWsa<>(
+                            List.of(
+                                            lobo));
+
+            MovimientoWsa<Integer> movimiento = new MovimientoWsa<>(
+                            problema,
+                            crearParametros());
+
+            movimiento.mover(
+                            lobo,
+                            poblacion);
+
+            assertEquals(
+                            7,
+                            lobo.solucion());
+
+            assertEquals(
+                            7.0,
+                            lobo.costo());
+    }
+
+    @Test
+    void realizaMovimientoAleatorioSiMovimientoDirigidoNoMejora() {
+
+            ProblemaHeuristico<Integer> problema = new ProblemaHeuristico<>() {
+
+                    @Override
+                    public double funcionCosto(
+                                    Integer solucion) {
+
+                            return solucion;
+                    }
+
+                    @Override
+                    public Integer generarVecino(
+                                    Integer solucion) {
+
+                            return 9;
+                    }
+
+                    @Override
+                    public Integer generarVecinoHacia(
+                                    Integer solucion,
+                                    Integer objetivo) {
+
+                            /*
+                             * Aunque el objetivo es mejor,
+                             * el paso dirigido generado
+                             * empeora la solución actual.
+                             */
+                            return 11;
+                    }
+
+                    @Override
+                    public double distancia(
+                                    Integer primera,
+                                    Integer segunda) {
+
+                            return Math.abs(
+                                            primera - segunda);
+                    }
+            };
+
+            Lobo<Integer> actual = crearLobo(
+                            10,
+                            10.0);
+
+            Lobo<Integer> mejor = crearLobo(
+                            8,
+                            8.0);
+
+            PoblacionWsa<Integer> poblacion = new PoblacionWsa<>(
+                            List.of(
+                                            actual,
+                                            mejor));
+
+            MovimientoWsa<Integer> movimiento = new MovimientoWsa<>(
+                            problema,
+                            crearParametros());
+
+            movimiento.mover(
+                            actual,
+                            poblacion);
+
+            assertEquals(
+                            9,
+                            actual.solucion());
+
+            assertEquals(
+                            9.0,
+                            actual.costo());
     }
 
     private Lobo<Integer> crearLobo(

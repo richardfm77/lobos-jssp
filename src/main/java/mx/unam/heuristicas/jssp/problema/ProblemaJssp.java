@@ -269,14 +269,9 @@ public final class ProblemaJssp
                         ArrayList<Operacion> operaciones) {
 
                 int primeraPosicion = generadorAleatorio.nextInt(
-                                operaciones.size());
-
-                int segundaPosicion = generadorAleatorio.nextInt(
                                 operaciones.size() - 1);
 
-                if (segundaPosicion >= primeraPosicion) {
-                        segundaPosicion++;
-                }
+                int segundaPosicion = primeraPosicion + 1;
 
                 Collections.swap(
                                 operaciones,

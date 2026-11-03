@@ -2,6 +2,8 @@ package mx.unam.heuristicas.jssp.wsa;
 
 import java.util.Optional;
 
+import mx.unam.heuristicas.jssp.util.DoublePrecision;
+
 public final class MovimientoWsa<S> {
 
         private final ProblemaHeuristico<S> problema;
@@ -63,8 +65,13 @@ public final class MovimientoWsa<S> {
                                 lobo,
                                 poblacion);
 
-                S candidato = null;
+                CandidatoEvaluado<S> candidato = null;
 
+                /*
+                 * Si existe un lobo visible mejor,
+                 * buscamos el mejor movimiento dirigido
+                 * entre varios candidatos.
+                 */
                 if (mejorVisible.isPresent()) {
 
                         candidato = buscarMovimientoDirigido(
@@ -73,8 +80,10 @@ public final class MovimientoWsa<S> {
                 }
 
                 /*
-                 * Si no había un lobo mejor o todos los movimientos
-                 * dirigidos estaban en memoria, exploramos aleatoriamente.
+                 * Si no existe un lobo visible mejor,
+                 * o ningún movimiento dirigido produjo
+                 * una mejora, realizamos exploración
+                 * aleatoria.
                  */
                 if (candidato == null) {
 
@@ -83,24 +92,23 @@ public final class MovimientoWsa<S> {
                 }
 
                 /*
-                 * No encontramos una posición admisible.
-                 * El lobo permanece donde está.
+                 * No fue posible encontrar una posición
+                 * admisible.
                  */
                 if (candidato == null) {
                         return;
                 }
 
-                double nuevoCosto = problema.funcionCosto(
-                                candidato);
-
                 lobo.actualizar(
-                                candidato,
-                                nuevoCosto);
+                                candidato.solucion(),
+                                candidato.costo());
         }
 
-        private S buscarMovimientoDirigido(
+        private CandidatoEvaluado<S> buscarMovimientoDirigido(
                         Lobo<S> lobo,
                         Lobo<S> objetivo) {
+
+                CandidatoEvaluado<S> mejorCandidato = null;
 
                 for (int intento = 0; intento < parametros.maxIntentosMovimiento(); intento++) {
 
@@ -108,27 +116,77 @@ public final class MovimientoWsa<S> {
                                         lobo.solucion(),
                                         objetivo.solucion());
 
-                        if (!lobo.recuerda(candidato)) {
-                                return candidato;
+                        /*
+                         * Las posiciones recientemente visitadas
+                         * por el lobo no son consideradas.
+                         */
+                        if (lobo.recuerda(candidato)) {
+                                continue;
                         }
+
+                        double costo = problema.funcionCosto(
+                                        candidato);
+
+                        if (mejorCandidato == null
+                                        || DoublePrecision.lessThan(
+                                                        costo,
+                                                        mejorCandidato.costo())) {
+
+                                mejorCandidato = new CandidatoEvaluado<>(
+                                                candidato,
+                                                costo);
+                        }
+                }
+
+                /*
+                 * Seguir al otro lobo solamente tiene sentido
+                 * si el paso producido representa una mejora
+                 * respecto a nuestra posición actual.
+                 */
+                if (mejorCandidato != null
+                                && DoublePrecision.lessThan(
+                                                mejorCandidato.costo(),
+                                                lobo.costo())) {
+
+                        return mejorCandidato;
                 }
 
                 return null;
         }
 
-        private S buscarMovimientoAleatorio(
+        private CandidatoEvaluado<S> buscarMovimientoAleatorio(
                         Lobo<S> lobo) {
+
+                CandidatoEvaluado<S> mejorCandidato = null;
 
                 for (int intento = 0; intento < parametros.maxIntentosMovimiento(); intento++) {
 
                         S candidato = problema.generarVecino(
                                         lobo.solucion());
 
-                        if (!lobo.recuerda(candidato)) {
-                                return candidato;
+                        if (lobo.recuerda(candidato)) {
+                                continue;
+                        }
+
+                        double costo = problema.funcionCosto(
+                                        candidato);
+
+                        if (mejorCandidato == null
+                                        || DoublePrecision.lessThan(
+                                                        costo,
+                                                        mejorCandidato.costo())) {
+
+                                mejorCandidato = new CandidatoEvaluado<>(
+                                                candidato,
+                                                costo);
                         }
                 }
 
-                return null;
+                return mejorCandidato;
+        }
+
+        private record CandidatoEvaluado<S>(
+                        S solucion,
+                        double costo) {
         }
 }
